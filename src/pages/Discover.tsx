@@ -190,19 +190,19 @@ const Discover = () => {
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 lg:pt-48 pb-6 md:pb-16 lg:pb-24 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium mb-6 md:mb-10 inline-flex flex-col items-center" style={{
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-medium mb-6 md:mb-10 inline-flex flex-col items-center" style={{
           animationDelay: '0.3s',
           animationFillMode: 'both'
         }}>
-            <div className="flex items-center">
+            <div className="flex items-center flex-wrap justify-center">
               <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
               animationDelay: '0.3s',
               animationFillMode: 'both'
-            }}>​Os melhores         </span>
+            }}>Os melhores</span>
               <span style={{
               animationDelay: '0.4s',
               animationFillMode: 'both'
-            }} className="bg-brand border border-black px-3 py-2 md:py-4 rounded-[500px] md:rounded-[40px] -ml-px animate-fade-in mx-[24px] font-semibold md:px-[20px] pb-[5px] pt-0">eventos</span>
+            }} className="bg-brand border border-black px-3 py-1 md:py-4 rounded-full md:rounded-[40px] -ml-px animate-fade-in ml-2 md:ml-4 font-semibold md:px-5">eventos</span>
             </div>
             <div className="flex items-center -mt-px">
               <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
