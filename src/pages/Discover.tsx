@@ -185,7 +185,7 @@ const Discover = () => {
       </div>
       
       {/* Decorative rotating badge - fixed to viewport */}
-      <RotatingBadge text="BOTA RITMO" onClick={scrollToEvents} showIcon={true} icon={<img src={arrowDown} alt="Seta para baixo" className="w-6 h-6 md:w-7 md:h-7 lg:w-12 lg:h-12" />} />
+      
       
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 lg:pt-48 pb-6 md:pb-16 lg:pb-24 px-4 md:px-8">
