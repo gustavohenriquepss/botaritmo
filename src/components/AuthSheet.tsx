@@ -10,6 +10,7 @@ interface AuthSheetProps {
 
 export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,11 +22,24 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
 
     try {
       if (isSignUp) {
+        if (!name.trim()) {
+          toast({
+            title: 'Erro',
+            description: 'Por favor, informe seu nome.',
+            variant: 'destructive'
+          });
+          setLoading(false);
+          return;
+        }
+        
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              display_name: name.trim()
+            }
           }
         });
         
@@ -93,6 +107,23 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
           </p>
 
           <form onSubmit={handleAuth} className="flex flex-col gap-6">
+            {isSignUp && (
+              <div>
+                <label htmlFor="name" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
+                  Nome
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="w-full bg-white/10 border border-white/20 text-white px-4 py-3 focus:outline-none focus:border-brand transition-colors"
+                  placeholder="Seu nome"
+                />
+              </div>
+            )}
+
             <div>
               <label htmlFor="email" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
                 E-mail
