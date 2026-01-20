@@ -37,7 +37,7 @@ export const Navbar: React.FC = () => {
     }
   }, [user, pendingRoute, navigate]);
   return createPortal(<>
-      <nav className="fixed top-8 left-4 md:left-8 z-[2000] flex items-center justify-start mx-0 gap-[200px]">
+      <nav className="fixed top-8 left-4 md:left-8 z-[2000] flex items-center justify-start mx-0 gap-2">
       {/* Logo */}
       <div className="h-[34px] flex items-center justify-center">
         <img src={logo} alt="Bota Ritmo" className="h-full w-auto object-contain" />
