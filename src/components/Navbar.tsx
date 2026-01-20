@@ -135,13 +135,13 @@ export const Navbar: React.FC = () => {
               </button>}
           </div>
         </div>}
-      
-      {/* Menu Button - Mobile Only */}
-      <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden relative overflow-hidden bg-white text-black h-[34px] px-3 border border-l-0 border-black flex items-center justify-center text-[11px] font-medium uppercase leading-none group">
-        <span className="relative z-10">MENU</span>
-        <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-      </button>
     </nav>
+
+    {/* Menu Button - Mobile Only - Fixed top right */}
+    <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden fixed top-8 right-4 z-[2000] relative overflow-hidden bg-white text-black h-[34px] px-3 border border-black flex items-center justify-center text-[11px] font-medium uppercase leading-none group">
+      <span className="relative z-10">MENU</span>
+      <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+    </button>
     
     <AuthSheet isOpen={isAuthOpen} onClose={() => {
       setIsAuthOpen(false);
