@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
 import { AuthSheet } from './AuthSheet';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo-br.png';
 export const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -39,8 +39,8 @@ export const Navbar: React.FC = () => {
   return createPortal(<>
       <nav className="fixed top-8 left-4 md:left-8 z-[2000] flex items-center justify-start mx-0 gap-[200px]">
       {/* Logo */}
-      <div className="h-[34px] w-[34px] border border-black flex items-center justify-center p-1 bg-neutral-950">
-        <img src={logo} alt="Logo" className="w-full h-full object-contain" />
+      <div className="h-[34px] flex items-center justify-center">
+        <img src={logo} alt="Bota Ritmo" className="h-full w-auto object-contain" />
       </div>
 
       {/* Desktop Navigation */}
