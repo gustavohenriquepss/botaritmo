@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { SEOHead } from '@/components/SEOHead';
 
 const Auth = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
@@ -50,19 +51,32 @@ const Auth = () => {
           description: 'Logged in successfully',
         });
       } else {
+        if (!name.trim()) {
+          toast({
+            title: 'Erro',
+            description: 'Por favor, informe seu nome.',
+            variant: 'destructive',
+          });
+          setLoading(false);
+          return;
+        }
+
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             emailRedirectTo: `${window.location.origin}/admin`,
+            data: {
+              display_name: name.trim(),
+            },
           },
         });
 
         if (error) throw error;
 
         toast({
-          title: 'Success',
-          description: 'Account created successfully',
+          title: 'Sucesso',
+          description: 'Conta criada com sucesso',
         });
       }
     } catch (error: any) {
@@ -92,6 +106,18 @@ const Auth = () => {
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {!isLogin && (
+            <div>
+              <Input
+                type="text"
+                placeholder="Nome"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="border-[#1A1A1A] text-[#1A1A1A]"
+              />
+            </div>
+          )}
           <div>
             <Input
               type="email"
