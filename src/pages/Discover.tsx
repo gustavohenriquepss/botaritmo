@@ -218,7 +218,8 @@ const Discover = () => {
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
           animationDelay: '0.7s',
           animationFillMode: 'both'
-        }}>Curadoria semanal de rolés por uma cultura realmente acessível, periférica e popular</p>
+        }}>Procurando um a boa pra esse fim de semana?
+Os rolês mais quentes tão sempre por aqui</p>
         </div>
       </section>
 
