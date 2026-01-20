@@ -218,8 +218,7 @@ const Discover = () => {
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
           animationDelay: '0.7s',
           animationFillMode: 'both'
-        }}>Procurando a boa pro fim de semana?
-Os rolês mais quentes tão sempre por aqui</p>
+        }}>Procurando a boa pro fim de semana?<br />Os rolês mais quentes tão sempre por aqui</p>
         </div>
       </section>
 
