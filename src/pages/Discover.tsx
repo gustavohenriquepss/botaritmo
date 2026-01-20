@@ -195,21 +195,21 @@ const Discover = () => {
           animationFillMode: 'both'
         }}>
             <div className="flex items-center">
-              <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-normal" style={{
+              <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
               animationDelay: '0.3s',
               animationFillMode: 'both'
-            }}>OS MELHORES</span>
+            }}>​Os melhores         </span>
               <span style={{
               animationDelay: '0.4s',
               animationFillMode: 'both'
-            }} className="bg-brand border border-black px-3 py-2 md:py-4 rounded-[500px] md:rounded-[40px] -ml-px animate-fade-in mx-[24px] font-normal md:px-[39px]">EVENTOS</span>
+            }} className="bg-brand border border-black px-3 py-2 md:py-4 rounded-[500px] md:rounded-[40px] -ml-px animate-fade-in mx-[24px] font-semibold md:px-[20px] pb-[5px] pt-0">eventos</span>
             </div>
             <div className="flex items-center -mt-px">
-              <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-normal" style={{
+              <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
               animationDelay: '0.5s',
               animationFillMode: 'both'
-            }}>TODA SEMANA</span>
-              <span className="border border-l-0 border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-normal" style={{
+            }}>toda semana</span>
+              <span className="border border-l-0 border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
               animationDelay: '0.6s',
               animationFillMode: 'both'
             }}>{"<3"}</span>
@@ -218,7 +218,8 @@ const Discover = () => {
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
           animationDelay: '0.7s',
           animationFillMode: 'both'
-        }}>Procurando a boa pro fim de semana?<br />Os rolês mais quentes tão sempre por aqui</p>
+        }}>Procurando a boa pro fim de semana?
+Os rolês mais quentes tão sempre por aqui</p>
         </div>
       </section>
 
