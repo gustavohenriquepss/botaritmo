@@ -3,6 +3,7 @@ import { Navbar } from '@/components/Navbar';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useGooglePlacesAutocomplete } from '@/hooks/useGooglePlacesAutocomplete';
 import { supabase } from '@/integrations/supabase/client';
@@ -168,7 +169,7 @@ const CreateEvent = () => {
       targetDate.setHours(parseInt(hours) || 0, parseInt(minutes) || 0);
 
       // Format date and time strings
-      const dateStr = format(startDate, 'MMMM dd, yyyy');
+      const dateStr = format(startDate, "dd 'de' MMMM, yyyy", { locale: ptBR });
       const timeStr = `${startTime} - ${endTime}`;
 
       // Get creator name from profile or fallback to email
@@ -275,7 +276,7 @@ const CreateEvent = () => {
                             !startDate && "text-[#C4C4C4]"
                           )}
                         >
-                          {startDate ? format(startDate, "EEE, dd MMM") : "Qui, 28 Out"}
+                          {startDate ? format(startDate, "EEE, dd MMM", { locale: ptBR }) : "Qui, 28 Out"}
                         </button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -311,7 +312,7 @@ const CreateEvent = () => {
                         !endDate && "text-[#C4C4C4]"
                       )}
                     >
-                      {endDate ? format(endDate, "EEE, dd MMM") : "Qui, 28 Out"}
+                      {endDate ? format(endDate, "EEE, dd MMM", { locale: ptBR }) : "Qui, 28 Out"}
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
