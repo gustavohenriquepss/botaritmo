@@ -70,18 +70,20 @@ const EventCard = ({
               <Trash2 className="w-4 h-4" />
             </button>
           </AlertDialogTrigger>
-          <AlertDialogContent className="bg-white border border-black">
-            <AlertDialogHeader>
-              <AlertDialogTitle>Excluir evento</AlertDialogTitle>
-              <AlertDialogDescription>
+          <AlertDialogContent className="bg-white border border-black rounded-none p-0 gap-0 max-w-md">
+            <AlertDialogHeader className="p-6 pb-4">
+              <AlertDialogTitle className="text-lg font-medium">Excluir evento</AlertDialogTitle>
+              <AlertDialogDescription className="text-sm text-black/60">
                 Tem certeza que deseja excluir "{event.title}"? Esta ação não pode ser desfeita.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel className="border border-black">Cancelar</AlertDialogCancel>
+            <AlertDialogFooter className="flex-row gap-0 p-0 border-t border-black">
+              <AlertDialogCancel className="flex-1 h-12 rounded-none border-0 border-r border-black bg-white text-black text-[11px] font-medium uppercase hover:bg-gray-100 m-0">
+                Cancelar
+              </AlertDialogCancel>
               <AlertDialogAction 
                 onClick={handleDelete}
-                className="bg-red-500 text-white hover:bg-red-600 border-0"
+                className="flex-1 h-12 rounded-none border-0 bg-black text-white text-[11px] font-medium uppercase hover:bg-black/80 m-0"
               >
                 Excluir
               </AlertDialogAction>
