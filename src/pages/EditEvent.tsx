@@ -14,6 +14,7 @@ import { AuthSheet } from '@/components/AuthSheet';
 import { SEOHead } from '@/components/SEOHead';
 import { Trash2 } from 'lucide-react';
 import { z } from 'zod';
+import { TimeInput } from '@/components/ui/time-input';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -426,12 +427,10 @@ const EditEvent = () => {
                         />
                       </PopoverContent>
                     </Popover>
-                    <input
-                      type="text"
+                    <TimeInput
                       placeholder="15:00"
-                      className="px-2 md:px-4 py-2 md:py-3 text-[14px] md:text-[17px] text-black text-center focus:outline-none placeholder:text-[#C4C4C4]"
                       value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
+                      onChange={setStartTime}
                     />
                   </div>
 
@@ -462,12 +461,10 @@ const EditEvent = () => {
                     />
                   </PopoverContent>
                 </Popover>
-                <input
-                  type="text"
+                <TimeInput
                   placeholder="16:00"
-                  className="px-2 md:px-4 py-2 md:py-3 text-[14px] md:text-[17px] text-black text-center focus:outline-none placeholder:text-[#C4C4C4]"
                   value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
+                  onChange={setEndTime}
                 />
               </div>
             </div>
