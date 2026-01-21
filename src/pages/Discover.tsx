@@ -194,7 +194,7 @@ const Discover = () => {
             animationDelay: '0.3s',
             animationFillMode: 'both'
           }}>
-            Os melhores eventos toda semana {"<3"}
+            Os rolés mais quentes do Rio em um só lugar
           </h1>
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
           animationDelay: '0.7s',
