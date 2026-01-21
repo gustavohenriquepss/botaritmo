@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { User } from '@supabase/supabase-js';
 import { AuthSheet } from '@/components/AuthSheet';
 import { SEOHead } from '@/components/SEOHead';
+import { TimeInput } from '@/components/ui/time-input';
 import { z } from 'zod';
 
 const eventSchema = z.object({
@@ -289,12 +290,10 @@ const CreateEvent = () => {
                         />
                       </PopoverContent>
                     </Popover>
-                    <input
-                      type="text"
+                    <TimeInput
                       placeholder="15:00"
-                      className="px-2 md:px-4 py-2 md:py-3 text-[14px] md:text-[17px] text-black text-center focus:outline-none placeholder:text-[#C4C4C4]"
                       value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
+                      onChange={setStartTime}
                     />
                   </div>
 
@@ -325,12 +324,10 @@ const CreateEvent = () => {
                     />
                   </PopoverContent>
                 </Popover>
-                <input
-                  type="text"
+                <TimeInput
                   placeholder="16:00"
-                  className="px-2 md:px-4 py-2 md:py-3 text-[14px] md:text-[17px] text-black text-center focus:outline-none placeholder:text-[#C4C4C4]"
                   value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
+                  onChange={setEndTime}
                 />
               </div>
             </div>
