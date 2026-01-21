@@ -6,7 +6,17 @@ import { User } from '@supabase/supabase-js';
 import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { SEOHead } from '@/components/SEOHead';
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 interface Event {
   id: string;
   title: string;
@@ -26,11 +36,8 @@ const EventCard = ({
 }) => {
   const navigate = useNavigate();
   
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm('Tem certeza que deseja excluir este evento?')) {
-      onDelete?.(event.id);
-    }
+  const handleDelete = () => {
+    onDelete?.(event.id);
   };
   
   return (
@@ -53,13 +60,34 @@ const EventCard = ({
         </div>
       </div>
       {isCreated && (
-        <button
-          onClick={handleDelete}
-          className="absolute top-4 right-4 bg-white border border-black p-2 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors opacity-0 group-hover:opacity-100"
-          aria-label="Excluir evento"
-        >
-          <Trash2 className="w-4 h-4" />
-        </button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-4 right-4 bg-white border border-black p-2 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors opacity-0 group-hover:opacity-100"
+              aria-label="Excluir evento"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-white border border-black">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Excluir evento</AlertDialogTitle>
+              <AlertDialogDescription>
+                Tem certeza que deseja excluir "{event.title}"? Esta ação não pode ser desfeita.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="border border-black">Cancelar</AlertDialogCancel>
+              <AlertDialogAction 
+                onClick={handleDelete}
+                className="bg-red-500 text-white hover:bg-red-600 border-0"
+              >
+                Excluir
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
       <h3 className="text-base font-medium">{event.title}</h3>
     </div>
