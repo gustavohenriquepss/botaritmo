@@ -241,7 +241,7 @@ export const RegistrationCounter: React.FC<{ eventId: string }> = ({ eventId }) 
   if (registrationCount === 0) return null;
 
   return (
-    <div className="flex justify-center items-center gap-[5px] bg-white px-4 py-2.5 max-sm:px-3 max-sm:py-2 animate-fade-in mb-2">
+    <div className="flex justify-center items-center gap-[5px] bg-white px-4 py-2.5 max-sm:px-3 max-sm:py-2 animate-fade-in">
       <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px]">
         {registrationCount} {registrationCount === 1 ? 'CONFIRMADO' : 'CONFIRMADOS'}
       </div>
