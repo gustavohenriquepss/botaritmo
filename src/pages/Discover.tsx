@@ -190,10 +190,10 @@ const Discover = () => {
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 lg:pt-48 pb-6 md:pb-16 lg:pb-24 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-semibold mb-6 md:mb-10 animate-fade-in" style={{
-            animationDelay: '0.3s',
-            animationFillMode: 'both'
-          }}>
+          <h1 className="sm:text-3xl md:text-5xl lg:text-7xl font-semibold mb-6 md:mb-10 animate-fade-in text-4xl" style={{
+          animationDelay: '0.3s',
+          animationFillMode: 'both'
+        }}>
             Os eventos mais quentes do Rio em um só lugar
           </h1>
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
