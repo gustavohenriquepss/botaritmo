@@ -14,6 +14,17 @@ import { AuthSheet } from '@/components/AuthSheet';
 import { SEOHead } from '@/components/SEOHead';
 import { Trash2 } from 'lucide-react';
 import { z } from 'zod';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const eventSchema = z.object({
   eventName: z.string().trim().min(1, 'Nome do evento é obrigatório').max(200, 'Nome do evento deve ter menos de 200 caracteres'),
@@ -305,10 +316,6 @@ const EditEvent = () => {
   };
 
   const handleDeleteEvent = async () => {
-    if (!window.confirm('Tem certeza que deseja excluir este evento? Esta ação não pode ser desfeita.')) {
-      return;
-    }
-
     try {
       const { error } = await supabase
         .from('events')
@@ -549,13 +556,35 @@ const EditEvent = () => {
                   </div>
 
                   {/* Delete Button */}
-                  <button
-                    onClick={handleDeleteEvent}
-                    className="flex w-[50px] h-[50px] justify-center items-center border border-red-500 bg-red-500 text-white transition-all duration-300 hover:bg-red-600 hover:border-red-600"
-                    aria-label="Excluir evento"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <button
+                        className="flex w-[50px] h-[50px] justify-center items-center border border-red-500 bg-red-500 text-white transition-all duration-300 hover:bg-red-600 hover:border-red-600"
+                        aria-label="Excluir evento"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-white border border-black rounded-none p-0 gap-0 max-w-md">
+                      <AlertDialogHeader className="p-6 pb-4">
+                        <AlertDialogTitle className="text-lg font-medium">Excluir evento</AlertDialogTitle>
+                        <AlertDialogDescription className="text-sm text-black/60">
+                          Tem certeza que deseja excluir "{eventName}"? Esta ação não pode ser desfeita.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="flex-row gap-0 p-0 border-t border-black">
+                        <AlertDialogCancel className="flex-1 h-12 rounded-none border-0 border-r border-black bg-white text-black text-[11px] font-medium uppercase hover:bg-gray-100 m-0">
+                          Cancelar
+                        </AlertDialogCancel>
+                        <AlertDialogAction 
+                          onClick={handleDeleteEvent}
+                          className="flex-1 h-12 rounded-none border-0 bg-black text-white text-[11px] font-medium uppercase hover:bg-black/80 m-0"
+                        >
+                          Excluir
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             </div>
