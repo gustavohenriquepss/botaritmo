@@ -5,7 +5,6 @@ import { ptBR } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -24,21 +23,20 @@ export function MobileDatePicker({
 }: MobileDatePickerProps) {
   return (
     <div className={cn("lg:hidden mb-6", className)}>
-      <div className="flex gap-2">
+      <div className="flex gap-0">
         <Popover>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "flex-1 justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
+            <button
+              className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border border-black leading-none group"
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "d 'de' MMMM", { locale: ptBR }) : "Filtrar por data"}
-            </Button>
+              <CalendarIcon className="mr-2 h-3 w-3 relative z-10" />
+              <span className="relative z-10">
+                {date ? format(date, "d 'de' MMMM", { locale: ptBR }).toUpperCase() : "FILTRAR POR DATA"}
+              </span>
+              <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+            </button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-50 bg-popover" align="start">
+          <PopoverContent className="w-auto p-0 z-50 bg-white border border-black" align="start">
             <Calendar
               mode="single"
               selected={date}
@@ -50,9 +48,13 @@ export function MobileDatePicker({
         </Popover>
 
         {date && (
-          <Button variant="ghost" onClick={onClear}>
-            Limpar
-          </Button>
+          <button
+            onClick={onClear}
+            className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border border-l-0 border-black leading-none group"
+          >
+            <span className="relative z-10">LIMPAR</span>
+            <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+          </button>
         )}
       </div>
     </div>
