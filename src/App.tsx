@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Discover from "./pages/Discover";
+import Calendar from "./pages/Calendar";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import MyEvents from "./pages/MyEvents";
@@ -17,6 +18,7 @@ const App = () => (
     <Sonner />
     <Routes>
       <Route path="/" element={<Discover />} />
+      <Route path="/calendario" element={<Calendar />} />
       <Route path="/event/:id" element={<Index />} />
       <Route path="/event/:id/edit" element={<EditEvent />} />
       <Route path="/my-events" element={<MyEvents />} />

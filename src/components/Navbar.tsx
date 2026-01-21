@@ -49,6 +49,10 @@ export const Navbar: React.FC = () => {
           <span className="relative z-10">DESCOBRIR</span>
           <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
         </Link>
+        <Link to="/calendario" className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border-l-0 border border-black leading-none group">
+          <span className="relative z-10">CALENDÁRIO</span>
+          <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+        </Link>
         <button onClick={() => {
           if (user) {
             navigate('/create-event');
@@ -93,6 +97,12 @@ export const Navbar: React.FC = () => {
             animationFillMode: 'both'
           }}>
               DESCOBRIR
+            </Link>
+            <Link to="/calendario" onClick={() => setIsMobileMenuOpen(false)} className="flex-1 flex items-center justify-center text-[#1A1A1A] text-[17px] font-medium uppercase border-b border-black tracking-[-0.34px] animate-fade-in" style={{
+            animationDelay: '0.15s',
+            animationFillMode: 'both'
+          }}>
+              CALENDÁRIO
             </Link>
             <button onClick={() => {
             if (user) {
