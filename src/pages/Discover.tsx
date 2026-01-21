@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import arrowDown from '@/assets/arrow-down.png';
 import { SEOHead } from '@/components/SEOHead';
@@ -221,48 +220,19 @@ const Discover = () => {
             </div>
 
             {/* Event Grid */}
-            <div className="lg:col-start-2">
-              {/* Mobile Date Picker */}
-              <div className="lg:hidden mb-6">
-                <div className="flex gap-2">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="flex-1 justify-start text-left font-normal border-black">
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {date ? format(date, "d 'de' MMMM", { locale: ptBR }) : "Filtrar por data"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-white z-50" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        className="pointer-events-auto"
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  {date && (
-                    <Button variant="ghost" onClick={() => setDate(undefined)} className="border border-black">
-                      Limpar
-                    </Button>
-                  )}
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:col-start-2 gap-5">
               {loading ? <div className="col-span-full text-center py-12">Carregando eventos...</div> : filteredEvents.length === 0 ? <div className="col-span-full text-center py-12">
                   {date ? `Nenhum evento encontrado para ${date.toLocaleDateString('pt-BR', {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric'
               })}` : 'Nenhum evento encontrado'}
-                </div> : filteredEvents.map((event, index) => <div key={event.id} className="animate-fade-in" style={{
+                </div> : filteredEvents.map((event, index) => <div key={event.id} className="animate-fade-in rounded" style={{
               animationDelay: `${1.0 + index * 0.1}s`,
               animationFillMode: 'both'
             }}>
                     <EventCard event={event} />
                   </div>)}
-              </div>
             </div>
           </div>
         </div>
