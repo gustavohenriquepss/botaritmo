@@ -7,7 +7,7 @@ import { EventMeta } from './EventMeta';
 import { EventHeader } from './EventHeader';
 import { EventDescription } from './EventDescription';
 import { EventLocation } from './EventLocation';
-import { EventRegistration } from './EventRegistration';
+import { EventRegistration, RegistrationCounter } from './EventRegistration';
 import { AuthSheet } from './AuthSheet';
 import { SEOHead } from './SEOHead';
 import { RotatingBadge } from './RotatingBadge';
@@ -128,7 +128,8 @@ export const EventDetailPage: React.FC = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}></div>
-          <div className="relative z-10 animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+          <div className="relative z-10 animate-fade-in flex flex-col items-start gap-[2px]" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+            <RegistrationCounter eventId={event.id} />
             <EventCountdown targetDate={new Date(event.target_date)} />
           </div>
         </div>
