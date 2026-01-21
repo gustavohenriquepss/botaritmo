@@ -128,7 +128,7 @@ export const EventDetailPage: React.FC = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}></div>
-          <div className="relative z-10 animate-fade-in flex flex-col items-start gap-2" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+          <div className="relative z-10 animate-fade-in flex flex-col items-start" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <RegistrationCounter eventId={event.id} />
             <EventCountdown targetDate={new Date(event.target_date)} />
           </div>
