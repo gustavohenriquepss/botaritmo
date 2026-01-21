@@ -199,9 +199,52 @@ export const EventRegistration: React.FC<EventRegistrationProps> = ({
           </div>
         )}
       </div>
-      <span className="text-sm text-muted-foreground text-center">
-        {registrationCount} {registrationCount === 1 ? 'pessoa confirmada' : 'pessoas confirmadas'}
-      </span>
+    </div>
+  );
+};
+
+export const RegistrationCounter: React.FC<{ eventId: string }> = ({ eventId }) => {
+  const [registrationCount, setRegistrationCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      const { count } = await supabase
+        .from('event_registrations')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_id', eventId);
+      
+      setRegistrationCount(count ?? 0);
+    };
+    
+    fetchCount();
+
+    // Subscribe to realtime updates
+    const channel = supabase
+      .channel(`registrations-${eventId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'event_registrations',
+          filter: `event_id=eq.${eventId}`
+        },
+        () => fetchCount()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [eventId]);
+
+  if (registrationCount === 0) return null;
+
+  return (
+    <div className="flex justify-center items-center gap-[5px] bg-white px-4 py-2.5 max-sm:px-3 max-sm:py-2 animate-fade-in">
+      <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px]">
+        {registrationCount} {registrationCount === 1 ? 'CONFIRMADO' : 'CONFIRMADOS'}
+      </div>
     </div>
   );
 };
