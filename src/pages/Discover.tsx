@@ -13,6 +13,7 @@ import arrowDown from '@/assets/arrow-down.png';
 import { SEOHead } from '@/components/SEOHead';
 import { EventsCarousel } from '@/components/EventsCarousel';
 import { RotatingBadge } from '@/components/RotatingBadge';
+import { MobileDatePicker } from '@/components/MobileDatePicker';
 interface Event {
   id: string;
   title: string;
@@ -218,6 +219,8 @@ const Discover = () => {
           }}>
               <Calendar mode="single" selected={date} onSelect={setDate} className="mx-auto" />
             </div>
+
+            <MobileDatePicker date={date} onSelect={setDate} onClear={() => setDate(undefined)} />
 
             {/* Event Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:col-start-2 gap-5">
