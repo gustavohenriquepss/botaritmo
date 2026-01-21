@@ -199,7 +199,7 @@ const Discover = () => {
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
           animationDelay: '0.7s',
           animationFillMode: 'both'
-        }}> O calendário de eventos feito pra quem quer dar um role sem perder tempo caçando flyer em story ou grupo de WhatsApp. </p>
+        }}>Feito pra quem quer dar um role sem perder tempo caçando flyer em story ou grupo de WhatsApp. Só clicar e brotar!</p>
         </div>
       </section>
 
