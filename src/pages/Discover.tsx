@@ -190,30 +190,11 @@ const Discover = () => {
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 lg:pt-48 pb-6 md:pb-16 lg:pb-24 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-medium mb-6 md:mb-10 inline-flex flex-col items-center lg:text-7xl" style={{
-          animationDelay: '0.3s',
-          animationFillMode: 'both'
-        }}>
-            <div className="flex items-center flex-wrap justify-center">
-              <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
-              animationDelay: '0.3s',
-              animationFillMode: 'both'
-            }}>Os melhores</span>
-              <span style={{
-              animationDelay: '0.4s',
-              animationFillMode: 'both'
-            }} className="bg-brand border border-black px-3 py-1 md:py-4 rounded-full md:rounded-[40px] -ml-px animate-fade-in ml-2 md:ml-4 font-semibold md:px-5">eventos</span>
-            </div>
-            <div className="flex items-center -mt-px">
-              <span className="border border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
-              animationDelay: '0.5s',
-              animationFillMode: 'both'
-            }}>toda semana</span>
-              <span className="border border-l-0 border-black px-3 md:px-6 py-2 md:py-4 animate-fade-in font-semibold" style={{
-              animationDelay: '0.6s',
-              animationFillMode: 'both'
-            }}>{"<3"}</span>
-            </div>
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-semibold mb-6 md:mb-10 animate-fade-in" style={{
+            animationDelay: '0.3s',
+            animationFillMode: 'both'
+          }}>
+            Os melhores eventos toda semana {"<3"}
           </h1>
           <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
           animationDelay: '0.7s',
