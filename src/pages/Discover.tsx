@@ -179,11 +179,13 @@ const Discover = () => {
     const oneHour = 1000 * 60 * 60;
     const hasEnded = target < now - oneHour;
     if (hasEnded) return false;
+    if (onlyBrazilCup && !event.broadcasts_brazil_game) return false;
     if (!date) return true;
     const eventDate = new Date(event.target_date);
     const selectedDate = new Date(date);
     return eventDate.getFullYear() === selectedDate.getFullYear() && eventDate.getMonth() === selectedDate.getMonth() && eventDate.getDate() === selectedDate.getDate();
   });
+  const hasBrazilCupEvents = events.some(e => e.broadcasts_brazil_game);
   const scrollToEvents = () => {
     const eventsSection = document.getElementById('events-section');
     eventsSection?.scrollIntoView({
