@@ -52,9 +52,11 @@ export type Database = {
           date: string
           description: string
           id: string
+          price_cents: number | null
           target_date: string
           time: string
           title: string
+          venue: string | null
         }
         Insert: {
           address: string
@@ -64,9 +66,11 @@ export type Database = {
           date: string
           description: string
           id?: string
+          price_cents?: number | null
           target_date: string
           time: string
           title: string
+          venue?: string | null
         }
         Update: {
           address?: string
@@ -76,9 +80,11 @@ export type Database = {
           date?: string
           description?: string
           id?: string
+          price_cents?: number | null
           target_date?: string
           time?: string
           title?: string
+          venue?: string | null
         }
         Relationships: []
       }

@@ -1,0 +1,1 @@
+ALTER TABLE public.events ADD COLUMN IF NOT EXISTS venue text, ADD COLUMN IF NOT EXISTS price_cents integer;
