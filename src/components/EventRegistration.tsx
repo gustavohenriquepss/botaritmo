@@ -27,6 +27,11 @@ export const EventRegistration: React.FC<EventRegistrationProps> = ({
   const { toast } = useToast();
 
   const fetchRegistrationCount = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      setRegistrationCount(0);
+      return;
+    }
     const { data } = await supabase
       .rpc('get_event_registration_count', { _event_id: eventId });
 
