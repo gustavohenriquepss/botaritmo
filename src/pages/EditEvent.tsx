@@ -140,6 +140,7 @@ const EditEvent = () => {
         setIsFree(true);
         setPriceInput('');
       }
+      setBroadcastsBrazilGame(!!data.broadcasts_brazil_game);
 
       // Parse date and time
       const targetDate = new Date(data.target_date);
