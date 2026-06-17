@@ -67,17 +67,17 @@ export const EventCountdown: React.FC<EventCountdownProps> = ({
 
   return <div className="flex items-center gap-[2px] max-md:static max-md:w-auto max-md:justify-center max-sm:flex-wrap">
       <div className="flex justify-center items-center gap-[5px] relative bg-white px-4 py-2.5 max-sm:px-3 max-sm:py-2 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-        <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] relative max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px]">
+        <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] relative max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px] font-display">
           {formatTime(timeLeft.days, 'D')}
         </div>
       </div>
       <div className="flex justify-center items-center gap-[5px] relative bg-white px-4 py-2.5 max-sm:px-3 max-sm:py-2 animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-        <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] relative max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px]">
+        <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] relative max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px] font-display">
           {formatTime(timeLeft.hours, 'H')}
         </div>
       </div>
       <div className="flex justify-center items-center gap-[5px] relative bg-white px-4 py-2.5 max-sm:px-3 max-sm:py-2 mx-0 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-        <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] relative max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px]">
+        <div className="text-[#1A1A1A] text-[42px] font-medium tracking-[-1.68px] relative max-md:text-[32px] max-md:tracking-[-1.28px] max-sm:text-2xl max-sm:tracking-[-0.96px] font-display">
           {formatTime(timeLeft.minutes, 'M')}
         </div>
       </div>
