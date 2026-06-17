@@ -116,7 +116,26 @@ export const EventDetailPage: React.FC = () => {
         title={event.title}
         description={event.description.substring(0, 160)}
         image={event.background_image_url}
-        keywords={`event, ${event.title}, ${event.address}, community event`}
+        keywords={`evento, ${event.title}, ${event.address}, eventos rio de janeiro`}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: event.title,
+          startDate: event.target_date,
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          location: {
+            '@type': 'Place',
+            name: event.address,
+            address: event.address,
+          },
+          image: [event.background_image_url],
+          description: event.description,
+          organizer: {
+            '@type': 'Organization',
+            name: event.creator,
+          },
+        }}
       />
       <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
       <Navbar />
