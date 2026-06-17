@@ -106,7 +106,7 @@ const Calendar: React.FC = () => {
       />
       <Navbar />
 
-      <div className="pt-24 pb-12 px-4 md:px-8">
+      <main className="pt-24 pb-12 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -144,18 +144,21 @@ const Calendar: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={navigatePrevious}
+                aria-label={viewMode === 'month' ? 'Mês anterior' : 'Semana anterior'}
                 className="w-[34px] h-[34px] flex items-center justify-center border border-black bg-white hover:bg-gray-100 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={navigateNext}
+                aria-label={viewMode === 'month' ? 'Próximo mês' : 'Próxima semana'}
                 className="w-[34px] h-[34px] flex items-center justify-center border border-black border-l-0 bg-white hover:bg-gray-100 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
               <button
                 onClick={goToToday}
+                aria-label="Ir para hoje"
                 className="h-[34px] px-4 text-[11px] font-medium uppercase border border-black border-l-0 bg-white hover:bg-gray-100 transition-colors"
               >
                 Hoje
@@ -245,7 +248,7 @@ const Calendar: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </main>
 
       {/* Day Events Modal */}
       {selectedDay && (
@@ -264,6 +267,7 @@ const Calendar: React.FC = () => {
               </h3>
               <button
                 onClick={() => setSelectedDay(null)}
+                aria-label="Fechar"
                 className="w-6 h-6 flex items-center justify-center hover:bg-white/20 transition-colors"
               >
                 <X className="w-4 h-4" />

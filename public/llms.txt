@@ -1,0 +1,11 @@
+# Bota Ritmo by YEON
+
+> Plataforma de descoberta de eventos no Rio de Janeiro: shows, festas e roles reunidos em um só lugar.
+
+Bota Ritmo agrega os eventos mais quentes do Rio para quem quer encontrar programação sem precisar caçar flyer em stories ou grupos de WhatsApp. Usuários podem descobrir eventos por data, ver detalhes, e organizadores podem postar seus próprios eventos.
+
+## Pages
+
+- [Descobrir Eventos](/): Grade de eventos do Rio filtrável por data, com carrossel dos próximos roles.
+- [Postar Evento](/create-event): Formulário para organizadores publicarem novos eventos (requer login).
+- [Entrar](/auth): Login e cadastro para criar e gerenciar eventos.
