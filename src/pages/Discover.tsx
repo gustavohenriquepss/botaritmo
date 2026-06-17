@@ -264,6 +264,7 @@ const Discover = () => {
             }}>
                     <EventCard event={event} />
                   </div>)}
+              </div>
             </div>
           </div>
         </div>
