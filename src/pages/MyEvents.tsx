@@ -165,7 +165,7 @@ const MyEvents = () => {
       // Fetch created events
       const { data: created, error: createdError } = await supabase
         .from('events')
-        .select('id, slug, title, date, time, background_image_url')
+        .select('id, slug, title, date, time, background_image_url, broadcasts_brazil_game')
         .eq('created_by', user.id)
         .order('target_date', { ascending: true });
 
