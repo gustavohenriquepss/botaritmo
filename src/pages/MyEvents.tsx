@@ -94,6 +94,11 @@ const EventCard = ({
           </AlertDialogContent>
         </AlertDialog>
       )}
+      {event.broadcasts_brazil_game && (
+        <div className="mb-2">
+          <BrazilCupBadge />
+        </div>
+      )}
       <h3 className="text-base font-medium font-display">{event.title}</h3>
     </div>
   );
