@@ -417,7 +417,7 @@ const EditEvent = () => {
                 <textarea
                   ref={titleRef}
                   placeholder="Nome do evento"
-                  className="w-full text-black text-[32px] md:text-[48px] lg:text-[56px] font-medium leading-[1.2] mb-4 md:mb-8 focus:outline-none bg-transparent border-none p-0 placeholder:text-[#C4C4C4] resize-none overflow-hidden whitespace-pre-wrap break-words"
+                  className="w-full text-black text-[32px] md:text-[48px] lg:text-[56px] font-medium leading-[1.2] mb-4 md:mb-8 focus:outline-none bg-transparent border-none p-0 placeholder:text-[#C4C4C4] resize-none overflow-hidden whitespace-pre-wrap break-words font-display"
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
                   rows={1}
