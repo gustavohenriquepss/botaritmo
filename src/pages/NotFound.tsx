@@ -16,7 +16,7 @@ const NotFound = () => {
         description="A página que você está procurando não existe. Volte para descobrir eventos e calendários da comunidade."
       />
       <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
+        <h1 className="mb-4 text-4xl font-bold font-display">404</h1>
         <p className="mb-4 text-xl text-gray-600">Ops! Página não encontrada</p>
         <a href="/" className="text-blue-500 underline hover:text-blue-700">
           Voltar para o Início
