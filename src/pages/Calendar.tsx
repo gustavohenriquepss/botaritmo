@@ -247,6 +247,7 @@ const Calendar: React.FC = () => {
               </div>
             </div>
           )}
+        </div>
       </main>
 
       {/* Day Events Modal */}
