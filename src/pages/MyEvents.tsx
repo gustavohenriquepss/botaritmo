@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/alert-dialog';
 interface Event {
   id: string;
+  slug: string;
   title: string;
   date: string;
   time: string;
@@ -43,7 +44,7 @@ const EventCard = ({
   return (
     <div 
       className="relative cursor-pointer group"
-      onClick={() => navigate(isCreated ? `/event/${event.id}/edit` : `/event/${event.id}`)}
+      onClick={() => navigate(isCreated ? `/event/${event.id}/edit` : `/evento/${event.slug}`)}
     >
       <div className="overflow-hidden mb-3">
         <div 
@@ -162,7 +163,7 @@ const MyEvents = () => {
       // Fetch created events
       const { data: created, error: createdError } = await supabase
         .from('events')
-        .select('id, title, date, time, background_image_url')
+        .select('id, slug, title, date, time, background_image_url')
         .eq('created_by', user.id)
         .order('target_date', { ascending: true });
 
@@ -176,6 +177,7 @@ const MyEvents = () => {
           event_id,
           events (
             id,
+            slug,
             title,
             date,
             time,

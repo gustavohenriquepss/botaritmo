@@ -6,6 +6,7 @@ import { formatPriceBRL } from '@/lib/price';
 
 interface Event {
   id: string;
+  slug: string;
   title: string;
   background_image_url: string;
   address: string;
@@ -22,7 +23,7 @@ export const EventsCarousel = () => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
         .from('events')
-        .select('id, title, background_image_url, address, date, time, price_cents')
+        .select('id, slug, title, background_image_url, address, date, time, price_cents')
         .order('target_date', { ascending: false })
         .limit(10);
 
@@ -48,7 +49,7 @@ export const EventsCarousel = () => {
               key={`${event.id}-${index}`}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/event/${event.id}`);
+                navigate(`/evento/${event.slug}`);
               }}
               className="relative flex-shrink-0 w-[65vw] md:w-[calc(40vw-0.5px)] aspect-[4/5] max-h-[800px] cursor-pointer overflow-hidden animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s`, animationFillMode: 'both' }}

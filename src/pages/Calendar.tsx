@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 interface Event {
   id: string;
+  slug: string;
   title: string;
   date: string;
   time: string;
@@ -35,7 +36,7 @@ const Calendar: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .select('id, title, date, time, background_image_url, target_date, address')
+      .select('id, slug, title, date, time, background_image_url, target_date, address')
       .order('target_date', { ascending: true });
 
     if (error) {
@@ -285,7 +286,7 @@ const Calendar: React.FC = () => {
                   {selectedDayEvents.map((event) => (
                     <div
                       key={event.id}
-                      onClick={() => navigate(`/event/${event.id}`)}
+                      onClick={() => navigate(`/evento/${event.slug}`)}
                       className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex gap-3">
