@@ -163,10 +163,10 @@ const CreateEvent = () => {
     setIsSubmitting(true);
 
     try {
-      // Upload image to storage
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      // Upload image to the user's folder, matching the storage access rules
+      const fileExt = imageFile.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+      const filePath = `${user.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('event-images')
