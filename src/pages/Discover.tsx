@@ -17,6 +17,7 @@ import { MobileDatePicker } from '@/components/MobileDatePicker';
 import { formatPriceBRL } from '@/lib/price';
 interface Event {
   id: string;
+  slug: string;
   title: string;
   date: string;
   time: string;
@@ -38,7 +39,7 @@ const EventCard = ({
     return now >= target && now <= target + oneHour;
   };
   const eventLive = isEventLive();
-  return <div className="relative cursor-pointer group" onClick={() => navigate(`/event/${event.id}`)}>
+  return <div className="relative cursor-pointer group" onClick={() => navigate(`/evento/${event.slug}`)}>
       <div className="overflow-hidden mb-3">
         <div className="aspect-square bg-gray-300 bg-cover bg-center transition-transform duration-500 ease-out group-hover:scale-110" style={{
         backgroundImage: `url(${event.background_image_url})`
@@ -150,7 +151,7 @@ const Discover = () => {
       const {
         data,
         error
-      } = await supabase.from('events').select('id, title, date, time, background_image_url, target_date, address, price_cents').order('target_date', {
+      } = await supabase.from('events').select('id, slug, title, date, time, background_image_url, target_date, address, price_cents').order('target_date', {
         ascending: true
       });
       if (error) throw error;

@@ -25,7 +25,7 @@ interface Event {
   price_cents: number | null;
 }
 export const EventDetailPage: React.FC = () => {
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const navigate = useNavigate();
   const [isRegistered, setIsRegistered] = useState(false);
   const [event, setEvent] = useState<Event | null>(null);
@@ -35,13 +35,18 @@ export const EventDetailPage: React.FC = () => {
   
   useEffect(() => {
     fetchEvent();
-    checkRegistration();
-  }, [id]);
+  }, [id, slug]);
+
+  useEffect(() => {
+    if (event?.id) checkRegistration();
+  }, [event?.id]);
   
   const fetchEvent = async () => {
-    const { data, error } = id
-      ? await supabase.from('events').select('*').eq('id', id).maybeSingle()
-      : await supabase.from('events').select('*').limit(1).maybeSingle();
+    let query = supabase.from('events').select('*');
+    if (slug) query = query.eq('slug', slug);
+    else if (id) query = query.eq('id', id);
+    else query = query.limit(1);
+    const { data, error } = await query.maybeSingle();
     
     if (error) {
       if (import.meta.env.DEV) console.error('Error fetching event:', error);
@@ -55,7 +60,7 @@ export const EventDetailPage: React.FC = () => {
   };
 
   const checkRegistration = async () => {
-    if (!id) return;
+    if (!event?.id) return;
     
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) return;
@@ -64,8 +69,9 @@ export const EventDetailPage: React.FC = () => {
       .from('event_registrations')
       .select('id')
       .eq('user_id', session.user.id)
-      .eq('event_id', id)
+      .eq('event_id', event.id)
       .maybeSingle();
+    
     
     setIsRegistered(!!data);
   };

@@ -53,6 +53,7 @@ export type Database = {
           description: string
           id: string
           price_cents: number | null
+          slug: string
           target_date: string
           time: string
           title: string
@@ -67,6 +68,7 @@ export type Database = {
           description: string
           id?: string
           price_cents?: number | null
+          slug?: string
           target_date: string
           time: string
           title: string
@@ -81,6 +83,7 @@ export type Database = {
           description?: string
           id?: string
           price_cents?: number | null
+          slug?: string
           target_date?: string
           time?: string
           title?: string
@@ -138,6 +141,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_event_slug: { Args: { _title: string }; Returns: string }
       get_event_registration_count: {
         Args: { _event_id: string }
         Returns: number
