@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { BrazilCupBadge } from '@/components/BrazilCupBadge';
 interface Event {
   id: string;
   slug: string;
@@ -24,6 +25,7 @@ interface Event {
   date: string;
   time: string;
   background_image_url: string;
+  broadcasts_brazil_game: boolean;
 }
 
 const EventCard = ({ 
@@ -91,6 +93,11 @@ const EventCard = ({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+      )}
+      {event.broadcasts_brazil_game && (
+        <div className="mb-2">
+          <BrazilCupBadge />
+        </div>
       )}
       <h3 className="text-base font-medium font-display">{event.title}</h3>
     </div>
@@ -163,7 +170,7 @@ const MyEvents = () => {
       // Fetch created events
       const { data: created, error: createdError } = await supabase
         .from('events')
-        .select('id, slug, title, date, time, background_image_url')
+        .select('id, slug, title, date, time, background_image_url, broadcasts_brazil_game')
         .eq('created_by', user.id)
         .order('target_date', { ascending: true });
 
@@ -181,7 +188,8 @@ const MyEvents = () => {
             title,
             date,
             time,
-            background_image_url
+            background_image_url,
+            broadcasts_brazil_game
           )
         `)
         .eq('user_id', user.id);

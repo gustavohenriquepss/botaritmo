@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
 import { formatPriceBRL } from '@/lib/price';
+import { BrazilCupBadge } from './BrazilCupBadge';
 
 interface Event {
   id: string;
@@ -13,6 +14,7 @@ interface Event {
   date: string;
   time: string;
   price_cents: number | null;
+  broadcasts_brazil_game: boolean;
 }
 
 export const EventsCarousel = () => {
@@ -23,7 +25,7 @@ export const EventsCarousel = () => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
         .from('events')
-        .select('id, slug, title, background_image_url, address, date, time, price_cents')
+        .select('id, slug, title, background_image_url, address, date, time, price_cents, broadcasts_brazil_game')
         .order('target_date', { ascending: false })
         .limit(10);
 
@@ -73,6 +75,12 @@ export const EventsCarousel = () => {
                   <div className="text-[11px] font-medium uppercase leading-none">{formatPriceBRL(event.price_cents)}</div>
                 </div>
               </div>
+
+              {event.broadcasts_brazil_game && (
+                <div className="absolute top-4 right-4">
+                  <BrazilCupBadge />
+                </div>
+              )}
 
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
                 <h3 className="text-xl md:text-2xl font-medium mb-1 tracking-tight font-display">{event.title}</h3>

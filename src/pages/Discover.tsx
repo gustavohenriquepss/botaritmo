@@ -15,6 +15,7 @@ import { EventsCarousel } from '@/components/EventsCarousel';
 import { RotatingBadge } from '@/components/RotatingBadge';
 import { MobileDatePicker } from '@/components/MobileDatePicker';
 import { formatPriceBRL } from '@/lib/price';
+import { BrazilCupBadge } from '@/components/BrazilCupBadge';
 interface Event {
   id: string;
   slug: string;
@@ -25,6 +26,7 @@ interface Event {
   target_date: string;
   address: string;
   price_cents: number | null;
+  broadcasts_brazil_game: boolean;
 }
 const EventCard = ({
   event
@@ -59,6 +61,11 @@ const EventCard = ({
             <div className="text-[11px] font-medium uppercase leading-none">AO VIVO</div>
           </div>}
       </div>
+      {event.broadcasts_brazil_game && (
+        <div className="absolute top-4 right-4">
+          <BrazilCupBadge />
+        </div>
+      )}
       <h3 className="text-lg font-medium font-display">{event.title}</h3>
       <p className="text-sm text-gray-500 mt-1">{event.address}</p>
     </div>;
@@ -69,6 +76,7 @@ const Discover = () => {
   const [loading, setLoading] = useState(true);
   const [userCountry, setUserCountry] = useState<string>('o mundo');
   const [initialDateSet, setInitialDateSet] = useState(false);
+  const [onlyBrazilCup, setOnlyBrazilCup] = useState(false);
   useEffect(() => {
     fetchEvents();
     detectUserCountry();
@@ -151,7 +159,7 @@ const Discover = () => {
       const {
         data,
         error
-      } = await supabase.from('events').select('id, slug, title, date, time, background_image_url, target_date, address, price_cents').order('target_date', {
+      } = await supabase.from('events').select('id, slug, title, date, time, background_image_url, target_date, address, price_cents, broadcasts_brazil_game').order('target_date', {
         ascending: true
       });
       if (error) throw error;
@@ -171,11 +179,13 @@ const Discover = () => {
     const oneHour = 1000 * 60 * 60;
     const hasEnded = target < now - oneHour;
     if (hasEnded) return false;
+    if (onlyBrazilCup && !event.broadcasts_brazil_game) return false;
     if (!date) return true;
     const eventDate = new Date(event.target_date);
     const selectedDate = new Date(date);
     return eventDate.getFullYear() === selectedDate.getFullYear() && eventDate.getMonth() === selectedDate.getMonth() && eventDate.getDate() === selectedDate.getDate();
   });
+  const hasBrazilCupEvents = events.some(e => e.broadcasts_brazil_game);
   const scrollToEvents = () => {
     const eventsSection = document.getElementById('events-section');
     eventsSection?.scrollIntoView({
@@ -227,7 +237,21 @@ const Discover = () => {
             <MobileDatePicker date={date} onSelect={setDate} onClear={() => setDate(undefined)} />
 
             {/* Event Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:col-start-2 gap-5">
+            <div className="lg:col-start-2 flex flex-col gap-5">
+              {hasBrazilCupEvents && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setOnlyBrazilCup((v) => !v)}
+                    aria-pressed={onlyBrazilCup}
+                    className={`inline-flex items-center gap-2 border border-black h-[34px] px-4 text-[11px] font-medium uppercase transition-colors ${onlyBrazilCup ? 'bg-[#FFDF00] text-black' : 'bg-white text-black hover:bg-[#FFDF00]/30'}`}
+                  >
+                    <span aria-hidden="true">🇧🇷</span> Brasil na Copa
+                    {onlyBrazilCup && <span className="ml-1 text-black/60">×</span>}
+                  </button>
+                </div>
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {loading ? <div className="col-span-full text-center py-12">Carregando eventos...</div> : filteredEvents.length === 0 ? <div className="col-span-full text-center py-12">
                   {date ? `Nenhum evento encontrado para ${date.toLocaleDateString('pt-BR', {
                 weekday: 'long',
@@ -240,6 +264,7 @@ const Discover = () => {
             }}>
                     <EventCard event={event} />
                   </div>)}
+              </div>
             </div>
           </div>
         </div>

@@ -1,73 +1,60 @@
-# URLs amigáveis de eventos
+# Tag "Brasil na Copa" para eventos
 
-Trocar `/event/<uuid>` por `/evento/<slug>` (ex: `/evento/baile-dos-amores`), mantendo links antigos funcionando via redirect.
+Feature temporária e simples: criadores marcam o evento como "transmite jogo do Brasil na Copa", ganhando destaque visual no app e um filtro dedicado no Discover.
 
-## 1. Banco de dados (migração)
+## 1. Banco de dados (migration)
 
-- Adicionar coluna `slug TEXT UNIQUE` em `public.events`.
-- Função `public.generate_event_slug(title text)`:
-  - Normaliza (minúsculas, remove acentos via `unaccent`, troca não-alfanumérico por `-`, colapsa hífens, trim).
-- Função `public.set_event_slug()` (trigger BEFORE INSERT/UPDATE):
-  - Se `slug` nulo ou título mudou, gera base a partir do título.
-  - Garante unicidade adicionando sufixo `-2`, `-3`, … se já existir.
-- Trigger em `events` chamando `set_event_slug()`.
-- Backfill: `UPDATE events SET slug = NULL` + rodar uma rotina que percorre linhas existentes e popula via trigger (ou um `DO $$ … $$` que atribui slug único por linha).
-- `ALTER COLUMN slug SET NOT NULL` ao final.
-- Extensão `unaccent` (criar se não existir).
+Adicionar coluna na tabela `events`:
 
-## 2. Rotas (`src/App.tsx`)
+- `broadcasts_brazil_game BOOLEAN NOT NULL DEFAULT false`
 
-- Adicionar `/evento/:slug` → `Index` (página de detalhe).
-- Manter `/event/:id` apontando para um novo componente leve `EventRedirect` que:
-  - Busca o evento pelo id, lê o `slug`, faz `<Navigate to={"/evento/"+slug} replace />`.
-  - Se não existir, mostra NotFound.
+Sem mudanças em RLS — segue as policies existentes de `events`.
 
-## 3. Página de detalhe (`EventDetailPage.tsx`)
+## 2. Criar/Editar evento
 
-- Ler `slug` de `useParams` (preferir `slug`, cair para `id` por compatibilidade).
-- `fetchEvent`: se `slug` presente, buscar `.eq('slug', slug)`; senão `.eq('id', id)`.
-- Selecionar também `slug` no `select('*')` (já coberto).
+Em `src/pages/CreateEvent.tsx` e `src/pages/EditEvent.tsx`:
 
-## 4. Links internos
+- Novo toggle (Switch shadcn) com label **"Transmite jogo do Brasil na Copa"** e um subtítulo curto tipo "Aparece com destaque e filtro especial durante a Copa".
+- Posicionado numa seção própria perto do final do form, antes do botão de salvar.
+- Salva no campo `broadcasts_brazil_game`.
 
-Atualizar todos os `navigate('/event/'+id)` / `to={'/event/'+id}` para usar slug:
+## 3. Destaque visual (badge)
 
-- `src/components/EventsCarousel.tsx`
-- `src/pages/Discover.tsx`
-- `src/pages/Calendar.tsx`
-- `src/pages/MyEvents.tsx`
-- `src/pages/Admin.tsx`
-- Qualquer outro uso encontrado por busca de `/event/`.
+Novo componente `src/components/BrazilCupBadge.tsx`:
 
-Selects dessas páginas passam a incluir `slug`.
+- Texto: **"BRASIL AO VIVO"** com emoji 🇧🇷
+- Estilo seguindo o design system do projeto (`rounded-none`, borda preta, uppercase 11px), mas com fundo amarelo Brasil (`#FFDF00`) e texto preto para destacar dos demais badges brancos.
+- Variante pequena para cards e variante destaque para a página do evento.
 
-## 5. Edição / criação
+Onde aparecer:
 
-- `CreateEvent` e `EditEvent`: nada a digitar manualmente — slug é gerado pelo trigger. Após salvar, redirecionar usando o `slug` retornado (`.select('slug').single()`).
+- **`EventsCarousel.tsx`**: badge no topo, junto com data/hora/preço.
+- **`Discover.tsx`**: badge sobreposto no card do evento.
+- **`Calendar.tsx`**: badge no card do evento.
+- **`MyEvents.tsx`**: badge no card.
+- **`EventDetailPage.tsx`** (`EventHeader`): badge em destaque junto ao título.
 
-## 6. SEO
+## 4. Filtro no Discover
 
-- `SEOHead` já usa `window.location.href` como canonical, então o canonical passa a ser a URL com slug automaticamente.
-- Sitemap (`public/sitemap.xml`): nenhuma mudança automática agora (estático). Pode ser tratado depois se desejado.
+Em `src/pages/Discover.tsx`:
 
-## 7. Validação
+- Novo chip/botão de filtro **"🇧🇷 Brasil na Copa"** na barra de filtros existente, no estilo dos outros filtros do Discover.
+- Quando ativo, mostra apenas eventos com `broadcasts_brazil_game = true`.
+- Toggle on/off (clicar de novo desativa).
 
-- Criar evento novo → URL `/evento/<slug>` funciona.
-- Editar título → slug não muda por padrão (mantém estabilidade de URL); apenas gerado se vazio. Confirmar essa escolha durante implementação (default: **não regenerar** ao editar para não quebrar links).
-- Abrir link antigo `/event/<uuid>` → redireciona para `/evento/<slug>`.
-- Dois eventos com mesmo título → segundo recebe `-2`.
+## 5. Queries
+
+Adicionar `broadcasts_brazil_game` no `.select()` de todos os componentes que listam eventos e nas interfaces `Event`:
+
+- `EventsCarousel.tsx`
+- `Discover.tsx`
+- `Calendar.tsx`
+- `MyEvents.tsx`
+- `EventDetailPage.tsx`
 
 ## Detalhes técnicos
 
-```text
-events
-  + slug text unique not null
-  + trigger set_event_slug BEFORE INSERT OR UPDATE OF title, slug
-```
-
-Rotas finais:
-```
-/evento/:slug         → Index (detalhe)
-/event/:id            → EventRedirect (301-like via <Navigate replace />)
-/event/:id/edit       → EditEvent (mantido)
-```
+- Migration única adicionando a coluna com default `false` (não quebra eventos existentes).
+- Tipos do Supabase serão regenerados automaticamente após a migration.
+- Sem mudanças em RLS, auth ou edge functions.
+- Por ser feature temporária: a coluna fica no schema mesmo depois da Copa; basta os criadores não marcarem mais. Se quiser remover depois, é só dropar a coluna e o componente do badge.

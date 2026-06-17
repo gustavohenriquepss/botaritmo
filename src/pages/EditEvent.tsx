@@ -49,6 +49,7 @@ const EditEvent = () => {
   const [venue, setVenue] = useState('');
   const [isFree, setIsFree] = useState(true);
   const [priceInput, setPriceInput] = useState('');
+  const [broadcastsBrazilGame, setBroadcastsBrazilGame] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -139,6 +140,7 @@ const EditEvent = () => {
         setIsFree(true);
         setPriceInput('');
       }
+      setBroadcastsBrazilGame(!!data.broadcasts_brazil_game);
 
       // Parse date and time
       const targetDate = new Date(data.target_date);
@@ -326,6 +328,7 @@ const EditEvent = () => {
           creator: creatorName,
           venue: venue.trim() || null,
           price_cents: priceCents,
+          broadcasts_brazil_game: broadcastsBrazilGame,
         })
         .eq('id', id);
 
@@ -544,6 +547,27 @@ const EditEvent = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+
+            {/* Brasil na Copa toggle */}
+            <button
+              type="button"
+              onClick={() => setBroadcastsBrazilGame((v) => !v)}
+              aria-pressed={broadcastsBrazilGame}
+              className={`w-full grid grid-cols-[1fr_auto] items-center gap-3 border border-black px-3 md:px-4 py-3 text-left transition-colors ${broadcastsBrazilGame ? 'bg-[#FFDF00]' : 'bg-white hover:bg-[#FFDF00]/30'}`}
+            >
+              <div className="flex flex-col">
+                <span className="text-[13px] md:text-[15px] font-medium uppercase tracking-wide flex items-center gap-2">
+                  <span aria-hidden="true">🇧🇷</span> Transmite jogo do Brasil na Copa
+                </span>
+                <span className="text-[11px] md:text-[12px] text-black/70 mt-1 normal-case">
+                  Seu evento aparece com destaque e filtro especial durante a Copa.
+                </span>
+              </div>
+              <span className={`text-[11px] font-medium uppercase border border-black px-3 h-[28px] flex items-center ${broadcastsBrazilGame ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                {broadcastsBrazilGame ? 'Sim' : 'Não'}
+              </span>
+            </button>
+
 
             {/* Registrants List */}
             {registrants.length > 0 && (
