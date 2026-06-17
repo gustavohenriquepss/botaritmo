@@ -230,9 +230,10 @@ const Calendar: React.FC = () => {
                           {dayEvents.slice(0, viewMode === 'week' ? 5 : 2).map((event) => (
                             <div
                               key={event.id}
-                              className="text-[9px] md:text-[10px] font-medium uppercase bg-brand text-black px-1 py-0.5 truncate"
-                              title={event.title}
+                              className={`text-[9px] md:text-[10px] font-medium uppercase px-1 py-0.5 truncate ${event.broadcasts_brazil_game ? 'bg-[#FFDF00] text-black' : 'bg-brand text-black'}`}
+                              title={event.broadcasts_brazil_game ? `🇧🇷 ${event.title} (Brasil ao vivo)` : event.title}
                             >
+                              {event.broadcasts_brazil_game && <span aria-hidden="true">🇧🇷 </span>}
                               {event.title}
                             </div>
                           ))}
