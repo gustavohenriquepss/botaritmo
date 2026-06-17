@@ -275,13 +275,21 @@ const EditEvent = () => {
     setIsSubmitting(true);
 
     try {
+      const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser();
+      if (authError || !currentUser) {
+        setUser(null);
+        setShowAuthModal(true);
+        toast.error('Sua sessão expirou. Entre novamente para editar o evento.');
+        return;
+      }
+
       let imageUrl = imagePreview;
 
       // Upload new image if changed
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop()?.toLowerCase() || 'jpg';
         const fileName = `${crypto.randomUUID()}.${fileExt}`;
-        const filePath = `${user.id}/${fileName}`;
+        const filePath = `${currentUser.id}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from('event-images')
@@ -305,14 +313,7 @@ const EditEvent = () => {
       const dateStr = format(startDate, "dd 'de' MMMM, yyyy", { locale: ptBR });
       const timeStr = `${startTime} - ${endTime}`;
 
-      // Get creator name from profile or fallback to email
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('display_name')
-        .eq('user_id', user.id)
-        .single();
-
-      const creatorName = profile?.display_name || user.email?.split('@')[0] || 'Anônimo';
+      const creatorName = user.email?.split('@')[0] || 'Anônimo';
 
       // Update event in database
       const { error: updateError } = await supabase
