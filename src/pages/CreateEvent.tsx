@@ -402,6 +402,27 @@ const CreateEvent = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
 
+            {/* Brasil na Copa toggle */}
+            <button
+              type="button"
+              onClick={() => setBroadcastsBrazilGame((v) => !v)}
+              aria-pressed={broadcastsBrazilGame}
+              className={`w-full grid grid-cols-[1fr_auto] items-center gap-3 border border-black px-3 md:px-4 py-3 text-left transition-colors ${broadcastsBrazilGame ? 'bg-[#FFDF00]' : 'bg-white hover:bg-[#FFDF00]/30'}`}
+            >
+              <div className="flex flex-col">
+                <span className="text-[13px] md:text-[15px] font-medium uppercase tracking-wide flex items-center gap-2">
+                  <span aria-hidden="true">🇧🇷</span> Transmite jogo do Brasil na Copa
+                </span>
+                <span className="text-[11px] md:text-[12px] text-black/70 mt-1 normal-case">
+                  Seu evento aparece com destaque e filtro especial durante a Copa.
+                </span>
+              </div>
+              <span className={`text-[11px] font-medium uppercase border border-black px-3 h-[28px] flex items-center ${broadcastsBrazilGame ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                {broadcastsBrazilGame ? 'Sim' : 'Não'}
+              </span>
+            </button>
+
+
                 {/* Submit Button */}
                 <div className="group flex items-center self-stretch relative overflow-hidden mt-4 md:mt-8">
                   <button
