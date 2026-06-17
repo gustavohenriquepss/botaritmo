@@ -68,7 +68,7 @@ export type Database = {
           description: string
           id?: string
           price_cents?: number | null
-          slug: string
+          slug?: string
           target_date: string
           time: string
           title: string
@@ -153,7 +153,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      unaccent: { Args: { "": string }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "user"
