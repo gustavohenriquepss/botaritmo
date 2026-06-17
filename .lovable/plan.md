@@ -1,33 +1,42 @@
-## Objetivo
-Adicionar duas novas informações aos eventos: **venue** (local/organizador) e **preço do ingresso** (gratuito ou valor em R$).
+## Diagnóstico
 
-## Mudanças
+Dois problemas separados aparecem ao criar evento:
 
-### 1. Banco de dados (migração)
-Adicionar duas colunas à tabela `events`:
-- `venue` (text, nullable) — nome livre da venue, ex: "Jungle Discos"
-- `price_cents` (integer, nullable) — valor em centavos; `NULL` = gratuito, `0+` = valor pago
+### 1. "Falha ao criar evento" — permissão de função no banco
+O upload da imagem para o bucket `event-images` está retornando:
 
-### 2. Criação/edição de evento (`CreateEvent.tsx` e `EditEvent.tsx`)
-- Novo campo de texto: **Venue** (ex: "Jungle Discos") — opcional
-- Novo bloco **Ingresso**:
-  - Toggle "Gratuito"
-  - Quando desmarcado, input numérico de valor em R$ (ex: 40,00)
-- Validação Zod: se não gratuito, valor > 0
+> `permission denied for function has_role`
 
-### 3. Página de detalhe do evento (`EventDetailPage.tsx` + `EventHeader.tsx`)
-- Exibir venue logo abaixo do título (ex: "por Jungle Discos") seguindo a tipografia uppercase 11px do projeto
-- Exibir preço numa nova seção/badge: "GRATUITO" ou "R$ 40,00"
+As policies de storage (`Users can upload/update/delete event images`) chamam `public.has_role(auth.uid(), 'admin')`. Verifiquei as permissões da função e ela **não tem EXECUTE concedido para `authenticated`/`anon`** — apenas `sandbox_exec`. Provavelmente uma migração recente de segurança revogou o `EXECUTE` padrão de `PUBLIC` sem reconceder aos roles do Supabase. Resultado: qualquer policy (de tabela ou storage) que use `has_role` falha para o usuário logado.
 
-### 4. Cards de descoberta (`Discover.tsx` e `EventsCarousel.tsx`)
-- Adicionar **apenas o preço** nos cards (badge "GRATUITO" ou "R$ 40")
-- Seguir o mesmo estilo dos badges existentes de data/hora (border preta, 11px uppercase, cantos retos)
-- **Não** adicionar venue nos cards (conforme escolhido)
+### 2. Endereço não funciona — Google Maps `RefererNotAllowedMapError`
+O console mostra:
 
-### 5. SEO (Event JSON-LD)
-- Incluir `offers.price` e `offers.priceCurrency: "BRL"` no JSON-LD do evento (ou `"0"` quando gratuito), e `location.name` usando a venue quando presente
+> Google Maps JavaScript API error: RefererNotAllowedMapError
+> Your site URL to be authorized: `https://0ef04c1e-ddd2-4774-97a7-79eb22622b9b.lovableproject.com/create-event`
 
-## Notas técnicas
-- Como `venue` e `price_cents` são opcionais, eventos existentes continuam funcionando sem migração de dados
-- Formatação de preço via `Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })`
-- Mantém o design system: bordas pretas, `rounded-none`, uppercase 11px nos badges
+Isso é uma restrição da **chave da API do Google Maps** no Google Cloud Console — não é algo que dá para corrigir por código. A chave precisa ter o domínio do preview da Lovable autorizado nas restrições de HTTP referrer.
+
+## Correções
+
+### Migração (corrige a criação de evento)
+Reconceder `EXECUTE` em `public.has_role` para os roles do Supabase, garantindo que policies que dependem dela funcionem:
+
+```sql
+GRANT EXECUTE ON FUNCTION public.has_role(uuid, public.app_role)
+  TO authenticated, anon, service_role;
+```
+
+Isso restaura o upload de imagem ao criar/editar evento e qualquer outra checagem de admin que use a função.
+
+### Ação que você precisa fazer (Google Maps)
+Na chave `AIzaSyA4Mxe-L7q0HXFtkIVBY19NBrsvsBDg46A` do Google Cloud Console → APIs & Services → Credentials → restrições de HTTP referrer, adicionar:
+
+- `https://*.lovableproject.com/*`
+- `https://*.lovable.app/*`
+- `https://botaritmo.com/*`
+
+Sem isso o autocomplete de endereço continua bloqueado mesmo após o fix do backend.
+
+## Fora do escopo
+- Não vou mexer em outras policies, código de upload, formulário de evento ou design — apenas a migração de GRANT.
