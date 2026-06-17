@@ -99,7 +99,7 @@ export const EventDetailPage: React.FC = () => {
         />
         <Navbar />
         <div className="text-center mt-20">
-          <h1 className="text-4xl font-medium mb-4 text-[#1A1A1A]">Evento Não Encontrado</h1>
+          <h1 className="text-4xl font-medium mb-4 text-[#1A1A1A] font-display">Evento Não Encontrado</h1>
           <p className="text-lg text-[#1A1A1A] opacity-70 mb-8">
             O evento que você está procurando não existe ou foi removido.
           </p>
