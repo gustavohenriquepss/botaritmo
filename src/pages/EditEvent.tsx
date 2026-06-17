@@ -328,6 +328,7 @@ const EditEvent = () => {
           creator: creatorName,
           venue: venue.trim() || null,
           price_cents: priceCents,
+          broadcasts_brazil_game: broadcastsBrazilGame,
         })
         .eq('id', id);
 
