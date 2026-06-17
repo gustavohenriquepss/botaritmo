@@ -237,7 +237,21 @@ const Discover = () => {
             <MobileDatePicker date={date} onSelect={setDate} onClear={() => setDate(undefined)} />
 
             {/* Event Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:col-start-2 gap-5">
+            <div className="lg:col-start-2 flex flex-col gap-5">
+              {hasBrazilCupEvents && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setOnlyBrazilCup((v) => !v)}
+                    aria-pressed={onlyBrazilCup}
+                    className={`inline-flex items-center gap-2 border border-black h-[34px] px-4 text-[11px] font-medium uppercase transition-colors ${onlyBrazilCup ? 'bg-[#FFDF00] text-black' : 'bg-white text-black hover:bg-[#FFDF00]/30'}`}
+                  >
+                    <span aria-hidden="true">🇧🇷</span> Brasil na Copa
+                    {onlyBrazilCup && <span className="ml-1 text-black/60">×</span>}
+                  </button>
+                </div>
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {loading ? <div className="col-span-full text-center py-12">Carregando eventos...</div> : filteredEvents.length === 0 ? <div className="col-span-full text-center py-12">
                   {date ? `Nenhum evento encontrado para ${date.toLocaleDateString('pt-BR', {
                 weekday: 'long',
