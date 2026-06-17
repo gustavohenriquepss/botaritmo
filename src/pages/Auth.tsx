@@ -98,7 +98,7 @@ const Auth = () => {
       />
       <div className="w-full max-w-md space-y-8">
         <div>
-          <h2 className="text-4xl font-normal text-[#1A1A1A] tracking-[-0.02em]">
+          <h2 className="text-4xl font-normal text-[#1A1A1A] tracking-[-0.02em] font-display">
             {isLogin ? 'Sign In' : 'Sign Up'}
           </h2>
           <p className="mt-2 text-sm text-[#1A1A1A] opacity-50">

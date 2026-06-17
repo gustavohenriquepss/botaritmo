@@ -259,7 +259,7 @@ const Admin = () => {
       />
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-normal text-[#1A1A1A] tracking-[-0.02em]">
+          <h1 className="text-4xl font-normal text-[#1A1A1A] tracking-[-0.02em] font-display">
             Event CMS
           </h1>
           <Button onClick={handleSignOut} variant="outline">

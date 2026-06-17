@@ -97,7 +97,7 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
 
         {/* Content */}
         <div className="flex flex-col h-full px-10 pt-24 pb-10">
-          <h2 className="text-white text-4xl font-medium mb-2">
+          <h2 className="text-white text-4xl font-medium mb-2 font-display">
             {isSignUp ? 'Criar Conta' : 'Entrar'}
           </h2>
           <p className="text-gray-400 text-sm mb-8">
