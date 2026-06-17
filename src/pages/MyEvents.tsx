@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { BrazilCupBadge } from '@/components/BrazilCupBadge';
 interface Event {
   id: string;
   slug: string;
@@ -24,6 +25,7 @@ interface Event {
   date: string;
   time: string;
   background_image_url: string;
+  broadcasts_brazil_game: boolean;
 }
 
 const EventCard = ({ 
