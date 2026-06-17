@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
 import { formatPriceBRL } from '@/lib/price';
+import { BrazilCupBadge } from './BrazilCupBadge';
 
 interface Event {
   id: string;
@@ -13,6 +14,7 @@ interface Event {
   date: string;
   time: string;
   price_cents: number | null;
+  broadcasts_brazil_game: boolean;
 }
 
 export const EventsCarousel = () => {
