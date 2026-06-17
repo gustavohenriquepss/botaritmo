@@ -31,6 +31,9 @@ const CreateEvent = () => {
   const [endTime, setEndTime] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
+  const [venue, setVenue] = useState('');
+  const [isFree, setIsFree] = useState(true);
+  const [priceInput, setPriceInput] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -145,6 +148,18 @@ const CreateEvent = () => {
       return;
     }
 
+    // Validate price
+    let priceCents: number | null = null;
+    if (!isFree) {
+      const normalized = priceInput.replace(/\./g, '').replace(',', '.');
+      const parsed = parseFloat(normalized);
+      if (!isFinite(parsed) || parsed <= 0) {
+        toast.error('Informe um valor de ingresso válido ou marque como gratuito');
+        return;
+      }
+      priceCents = Math.round(parsed * 100);
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -194,6 +209,8 @@ const CreateEvent = () => {
           background_image_url: publicUrl,
           target_date: targetDate.toISOString(),
           creator: creatorName,
+          venue: venue.trim() || null,
+          price_cents: priceCents,
         });
 
       if (insertError) throw insertError;
