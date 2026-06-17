@@ -185,9 +185,7 @@ const Discover = () => {
         <Navbar />
       </div>
       
-      {/* Decorative rotating badge - fixed to viewport */}
-      
-      
+      <main>
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 lg:pt-48 pb-6 md:pb-16 lg:pb-24 px-4 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -208,7 +206,7 @@ const Discover = () => {
       <EventsCarousel />
 
       {/* Events Section */}
-      <section id="events-section" className="px-4 md:px-8 pb-16 pt-6 md:pt-16">
+      <section id="events-section" className="px-4 md:px-8 pb-16 pt-6 md:pt-16" aria-label="Lista de eventos">
         <div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-12 mt-8 md:mt-16">
@@ -240,6 +238,7 @@ const Discover = () => {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer />
     </div>;
