@@ -58,7 +58,7 @@ const EventCard = ({
             <div className="text-[11px] font-medium uppercase leading-none">AO VIVO</div>
           </div>}
       </div>
-      <h3 className="text-lg font-medium">{event.title}</h3>
+      <h3 className="text-lg font-medium font-display">{event.title}</h3>
       <p className="text-sm text-gray-500 mt-1">{event.address}</p>
     </div>;
 };
