@@ -47,6 +47,7 @@ export type Database = {
         Row: {
           address: string
           background_image_url: string
+          broadcasts_brazil_game: boolean
           created_by: string
           creator: string
           date: string
@@ -62,6 +63,7 @@ export type Database = {
         Insert: {
           address: string
           background_image_url: string
+          broadcasts_brazil_game?: boolean
           created_by?: string
           creator: string
           date: string
@@ -77,6 +79,7 @@ export type Database = {
         Update: {
           address?: string
           background_image_url?: string
+          broadcasts_brazil_game?: boolean
           created_by?: string
           creator?: string
           date?: string

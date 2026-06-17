@@ -1,0 +1,1 @@
+ALTER TABLE public.events ADD COLUMN broadcasts_brazil_game BOOLEAN NOT NULL DEFAULT false;
