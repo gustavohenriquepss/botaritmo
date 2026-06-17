@@ -49,6 +49,7 @@ const EditEvent = () => {
   const [venue, setVenue] = useState('');
   const [isFree, setIsFree] = useState(true);
   const [priceInput, setPriceInput] = useState('');
+  const [broadcastsBrazilGame, setBroadcastsBrazilGame] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
