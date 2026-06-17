@@ -21,6 +21,8 @@ interface Event {
   address: string;
   background_image_url: string;
   target_date: string;
+  venue: string | null;
+  price_cents: number | null;
 }
 export const EventDetailPage: React.FC = () => {
   const { id } = useParams();
@@ -126,14 +128,20 @@ export const EventDetailPage: React.FC = () => {
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           location: {
             '@type': 'Place',
-            name: event.address,
+            name: event.venue || event.address,
             address: event.address,
           },
           image: [event.background_image_url],
           description: event.description,
           organizer: {
             '@type': 'Organization',
-            name: event.creator,
+            name: event.venue || event.creator,
+          },
+          offers: {
+            '@type': 'Offer',
+            price: event.price_cents != null ? (event.price_cents / 100).toFixed(2) : '0',
+            priceCurrency: 'BRL',
+            availability: 'https://schema.org/InStock',
           },
         }}
       />
@@ -157,7 +165,7 @@ export const EventDetailPage: React.FC = () => {
           <div className="flex w-full flex-col items-start gap-10 relative p-10 pb-24 max-lg:w-full max-lg:px-4 max-lg:py-6 max-lg:pb-6 max-lg:gap-8 opacity-0 animate-fade-in [animation-delay:200ms]">
             <div className="flex flex-col items-start gap-4 self-stretch relative">
               <EventMeta date={event.date} time={event.time} targetDate={event.target_date} />
-              <EventHeader title={event.title} creator={event.creator} />
+              <EventHeader title={event.title} creator={event.creator} venue={event.venue} priceCents={event.price_cents} />
             </div>
             
             <EventDescription description={event.description} />

@@ -14,6 +14,7 @@ import { SEOHead } from '@/components/SEOHead';
 import { EventsCarousel } from '@/components/EventsCarousel';
 import { RotatingBadge } from '@/components/RotatingBadge';
 import { MobileDatePicker } from '@/components/MobileDatePicker';
+import { formatPriceBRL } from '@/lib/price';
 interface Event {
   id: string;
   title: string;
@@ -22,6 +23,7 @@ interface Event {
   background_image_url: string;
   target_date: string;
   address: string;
+  price_cents: number | null;
 }
 const EventCard = ({
   event
@@ -48,6 +50,9 @@ const EventCard = ({
         </div>
         <div className="bg-white border border-t-0 border-black px-3 h-[23px] flex items-center">
           <div className="text-[11px] font-medium leading-none">{event.time}</div>
+        </div>
+        <div className={`border border-t-0 border-black px-3 h-[23px] flex items-center ${(event.price_cents == null || event.price_cents === 0) ? 'bg-black text-white' : 'bg-white text-black'}`}>
+          <div className="text-[11px] font-medium uppercase leading-none">{formatPriceBRL(event.price_cents)}</div>
         </div>
         {eventLive && <div className="bg-white border border-t-0 border-black px-3 h-[23px] flex items-center">
             <div className="text-[11px] font-medium uppercase leading-none">AO VIVO</div>
@@ -145,7 +150,7 @@ const Discover = () => {
       const {
         data,
         error
-      } = await supabase.from('events').select('id, title, date, time, background_image_url, target_date, address').order('target_date', {
+      } = await supabase.from('events').select('id, title, date, time, background_image_url, target_date, address, price_cents').order('target_date', {
         ascending: true
       });
       if (error) throw error;
