@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 
+import { formatPriceBRL } from '@/lib/price';
+
 interface Event {
   id: string;
   title: string;
@@ -9,6 +11,7 @@ interface Event {
   address: string;
   date: string;
   time: string;
+  price_cents: number | null;
 }
 
 export const EventsCarousel = () => {
@@ -19,7 +22,7 @@ export const EventsCarousel = () => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
         .from('events')
-        .select('id, title, background_image_url, address, date, time')
+        .select('id, title, background_image_url, address, date, time, price_cents')
         .order('target_date', { ascending: false })
         .limit(10);
 
@@ -64,6 +67,9 @@ export const EventsCarousel = () => {
                 </div>
                 <div className="bg-white border border-t-0 border-black px-3 h-[23px] flex items-center">
                   <div className="text-[11px] font-medium uppercase leading-none">{event.time}</div>
+                </div>
+                <div className={`border border-t-0 border-black px-3 h-[23px] flex items-center ${(event.price_cents == null || event.price_cents === 0) ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                  <div className="text-[11px] font-medium uppercase leading-none">{formatPriceBRL(event.price_cents)}</div>
                 </div>
               </div>
 
