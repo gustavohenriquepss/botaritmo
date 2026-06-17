@@ -1,42 +1,22 @@
-## Diagnóstico
+## Problema
+Em `src/components/EventDescription.tsx`, a descrição é renderizada em um `<p>` sem preservar quebras de linha (`\n` viram espaço). Descrições longas também ocupam muito espaço na sidebar.
 
-Dois problemas separados aparecem ao criar evento:
+## Mudanças (apenas `src/components/EventDescription.tsx`)
 
-### 1. "Falha ao criar evento" — permissão de função no banco
-O upload da imagem para o bucket `event-images` está retornando:
+1. **Respeitar quebras de linha**
+   - Adicionar `whitespace-pre-line` no parágrafo, para preservar `\n` digitados pelo organizador sem permitir HTML.
 
-> `permission denied for function has_role`
+2. **Botão "Mostrar mais / Mostrar menos"**
+   - Limite: se a descrição passar de ~280 caracteres (ou tiver mais de 6 linhas), renderizar colapsada.
+   - Estado local `expanded` (useState).
+   - Quando colapsada: usar `line-clamp-6` com `whitespace-pre-line` e fade opcional; mostrar botão "MOSTRAR MAIS".
+   - Quando expandida: mostrar texto completo + botão "MOSTRAR MENOS".
+   - Botão segue o design system da marca: texto 11px, uppercase, `font-display`, underline on hover, cor `#1A1A1A`, sem bordas/arredondamento (alinhado ao restante da página de evento).
+   - Se a descrição for curta, não renderiza o botão — comportamento atual preservado.
 
-As policies de storage (`Users can upload/update/delete event images`) chamam `public.has_role(auth.uid(), 'admin')`. Verifiquei as permissões da função e ela **não tem EXECUTE concedido para `authenticated`/`anon`** — apenas `sandbox_exec`. Provavelmente uma migração recente de segurança revogou o `EXECUTE` padrão de `PUBLIC` sem reconceder aos roles do Supabase. Resultado: qualquer policy (de tabela ou storage) que use `has_role` falha para o usuário logado.
+3. **Sem alterações** em backend, rotas, outros componentes, ou no campo `description` salvo no banco.
 
-### 2. Endereço não funciona — Google Maps `RefererNotAllowedMapError`
-O console mostra:
-
-> Google Maps JavaScript API error: RefererNotAllowedMapError
-> Your site URL to be authorized: `https://0ef04c1e-ddd2-4774-97a7-79eb22622b9b.lovableproject.com/create-event`
-
-Isso é uma restrição da **chave da API do Google Maps** no Google Cloud Console — não é algo que dá para corrigir por código. A chave precisa ter o domínio do preview da Lovable autorizado nas restrições de HTTP referrer.
-
-## Correções
-
-### Migração (corrige a criação de evento)
-Reconceder `EXECUTE` em `public.has_role` para os roles do Supabase, garantindo que policies que dependem dela funcionem:
-
-```sql
-GRANT EXECUTE ON FUNCTION public.has_role(uuid, public.app_role)
-  TO authenticated, anon, service_role;
-```
-
-Isso restaura o upload de imagem ao criar/editar evento e qualquer outra checagem de admin que use a função.
-
-### Ação que você precisa fazer (Google Maps)
-Na chave `AIzaSyA4Mxe-L7q0HXFtkIVBY19NBrsvsBDg46A` do Google Cloud Console → APIs & Services → Credentials → restrições de HTTP referrer, adicionar:
-
-- `https://*.lovableproject.com/*`
-- `https://*.lovable.app/*`
-- `https://botaritmo.com/*`
-
-Sem isso o autocomplete de endereço continua bloqueado mesmo após o fix do backend.
-
-## Fora do escopo
-- Não vou mexer em outras policies, código de upload, formulário de evento ou design — apenas a migração de GRANT.
+## Validação
+- Abrir um evento com descrição multi-parágrafo: confirmar que as quebras aparecem.
+- Abrir um evento com descrição longa: confirmar truncamento + botão expandindo/recolhendo.
+- Abrir um evento com descrição curta: confirmar que o botão não aparece.
