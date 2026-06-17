@@ -10,6 +10,7 @@ interface AuthSheetProps {
 
 export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgot, setIsForgot] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
