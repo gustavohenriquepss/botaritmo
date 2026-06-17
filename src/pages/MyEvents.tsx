@@ -183,7 +183,8 @@ const MyEvents = () => {
             title,
             date,
             time,
-            background_image_url
+            background_image_url,
+            broadcasts_brazil_game
           )
         `)
         .eq('user_id', user.id);
