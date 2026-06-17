@@ -15,6 +15,7 @@ import { EventsCarousel } from '@/components/EventsCarousel';
 import { RotatingBadge } from '@/components/RotatingBadge';
 import { MobileDatePicker } from '@/components/MobileDatePicker';
 import { formatPriceBRL } from '@/lib/price';
+import { BrazilCupBadge } from '@/components/BrazilCupBadge';
 interface Event {
   id: string;
   slug: string;
@@ -25,6 +26,7 @@ interface Event {
   target_date: string;
   address: string;
   price_cents: number | null;
+  broadcasts_brazil_game: boolean;
 }
 const EventCard = ({
   event
