@@ -34,6 +34,7 @@ const CreateEvent = () => {
   const [venue, setVenue] = useState('');
   const [isFree, setIsFree] = useState(true);
   const [priceInput, setPriceInput] = useState('');
+  const [broadcastsBrazilGame, setBroadcastsBrazilGame] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [user, setUser] = useState<User | null>(null);
