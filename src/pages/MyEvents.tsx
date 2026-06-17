@@ -223,7 +223,7 @@ const MyEvents = () => {
         title="Meus Eventos"
         description="Gerencie seus eventos criados e veja os eventos em que você se inscreveu"
       />
-      <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap" rel="stylesheet" />
       
       <div className="min-h-screen bg-white">
         <Navbar />
