@@ -24,6 +24,13 @@ export default {
   				'Segoe UI Symbol',
   				'Noto Color Emoji'
   			],
+  			display: [
+  				'"Google Sans Flex"',
+  				'Inter',
+  				'ui-sans-serif',
+  				'system-ui',
+  				'sans-serif'
+  			],
   			serif: [
   				'Cormorant Garamond',
   				'ui-serif',
