@@ -25,7 +25,7 @@ export const EventsCarousel = () => {
     const fetchEvents = async () => {
       const { data, error } = await supabase
         .from('events')
-        .select('id, slug, title, background_image_url, address, date, time, price_cents')
+        .select('id, slug, title, background_image_url, address, date, time, price_cents, broadcasts_brazil_game')
         .order('target_date', { ascending: false })
         .limit(10);
 
