@@ -62,6 +62,11 @@ const EventCard = ({
           <div className="text-[11px] font-medium leading-none">{event.time}</div>
         </div>
       </div>
+      {event.broadcasts_brazil_game && (
+        <div className="absolute top-4 right-4">
+          <BrazilCupBadge />
+        </div>
+      )}
       {isCreated && (
         <AlertDialog>
           <AlertDialogTrigger asChild>
