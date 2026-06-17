@@ -258,6 +258,18 @@ const EditEvent = () => {
       return;
     }
 
+    // Validate price
+    let priceCents: number | null = null;
+    if (!isFree) {
+      const normalized = priceInput.replace(/\./g, '').replace(',', '.');
+      const parsed = parseFloat(normalized);
+      if (!isFinite(parsed) || parsed <= 0) {
+        toast.error('Informe um valor de ingresso válido ou marque como gratuito');
+        return;
+      }
+      priceCents = Math.round(parsed * 100);
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -312,6 +324,8 @@ const EditEvent = () => {
           background_image_url: imageUrl,
           target_date: targetDate.toISOString(),
           creator: creatorName,
+          venue: venue.trim() || null,
+          price_cents: priceCents,
         })
         .eq('id', id);
 
@@ -489,6 +503,38 @@ const EditEvent = () => {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />
+
+            {/* Venue */}
+            <input
+              type="text"
+              placeholder="Venue / organizador (ex: Jungle Discos)"
+              className="w-full px-3 md:px-4 py-2 md:py-3 text-[14px] md:text-[17px] text-black border border-black focus:outline-none placeholder:text-[#C4C4C4]"
+              value={venue}
+              onChange={(e) => setVenue(e.target.value)}
+              maxLength={150}
+            />
+
+            {/* Ingresso */}
+            <div className="grid grid-cols-[1fr_auto] gap-0 border border-black">
+              <input
+                type="text"
+                inputMode="decimal"
+                placeholder="0,00"
+                disabled={isFree}
+                className="px-3 md:px-4 py-2 md:py-3 text-[14px] md:text-[17px] text-black border-r border-black focus:outline-none placeholder:text-[#C4C4C4] disabled:bg-[#F2F2F2] disabled:text-[#C4C4C4]"
+                value={isFree ? '' : priceInput}
+                onChange={(e) => setPriceInput(e.target.value)}
+                aria-label="Valor do ingresso em reais"
+              />
+              <button
+                type="button"
+                onClick={() => setIsFree((v) => !v)}
+                className={`px-4 py-2 md:py-3 text-[11px] font-medium uppercase tracking-wider transition-colors ${isFree ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'}`}
+                aria-pressed={isFree}
+              >
+                {isFree ? 'GRATUITO' : 'PAGO'}
+              </button>
+            </div>
 
             {/* Description */}
             <textarea
