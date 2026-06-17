@@ -172,7 +172,7 @@ export const EventDetailPage: React.FC = () => {
           <div className="flex w-full flex-col items-start gap-10 relative p-10 pb-24 max-lg:w-full max-lg:px-4 max-lg:py-6 max-lg:pb-6 max-lg:gap-8 opacity-0 animate-fade-in [animation-delay:200ms]">
             <div className="flex flex-col items-start gap-4 self-stretch relative">
               <EventMeta date={event.date} time={event.time} targetDate={event.target_date} />
-              <EventHeader title={event.title} creator={event.creator} venue={event.venue} priceCents={event.price_cents} />
+              <EventHeader title={event.title} creator={event.creator} venue={event.venue} priceCents={event.price_cents} broadcastsBrazilGame={event.broadcasts_brazil_game} />
             </div>
             
             <EventDescription description={event.description} />
