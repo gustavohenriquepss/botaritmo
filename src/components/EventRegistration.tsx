@@ -206,12 +206,10 @@ export const RegistrationCounter: React.FC<{ eventId: string }> = ({ eventId }) 
 
   useEffect(() => {
     const fetchCount = async () => {
-      const { count } = await supabase
-        .from('event_registrations')
-        .select('*', { count: 'exact', head: true })
-        .eq('event_id', eventId);
-      
-      setRegistrationCount(count ?? 0);
+      const { data } = await supabase
+        .rpc('get_event_registration_count', { _event_id: eventId });
+
+      setRegistrationCount(Number(data ?? 0));
     };
     
     fetchCount();
