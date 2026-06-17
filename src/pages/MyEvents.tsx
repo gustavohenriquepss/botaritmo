@@ -91,7 +91,7 @@ const EventCard = ({
           </AlertDialogContent>
         </AlertDialog>
       )}
-      <h3 className="text-base font-medium">{event.title}</h3>
+      <h3 className="text-base font-medium font-display">{event.title}</h3>
     </div>
   );
 };
@@ -230,7 +230,7 @@ const MyEvents = () => {
         
         <div className="pt-32 pb-20 px-4 md:px-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight mb-8 font-display">
               Meus Eventos
             </h1>
 
