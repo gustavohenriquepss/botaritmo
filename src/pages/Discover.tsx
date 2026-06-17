@@ -153,7 +153,7 @@ const Discover = () => {
       const {
         data,
         error
-      } = await supabase.from('events').select('id, slug, title, date, time, background_image_url, target_date, address, price_cents').order('target_date', {
+      } = await supabase.from('events').select('id, slug, title, date, time, background_image_url, target_date, address, price_cents, broadcasts_brazil_game').order('target_date', {
         ascending: true
       });
       if (error) throw error;
