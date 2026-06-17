@@ -37,7 +37,7 @@ const Calendar: React.FC = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('events')
-      .select('id, slug, title, date, time, background_image_url, target_date, address')
+      .select('id, slug, title, date, time, background_image_url, target_date, address, broadcasts_brazil_game')
       .order('target_date', { ascending: true });
 
     if (error) {
