@@ -1,14 +1,16 @@
 import React from 'react';
 import { formatPriceBRL } from '@/lib/price';
+import { BrazilCupBadge } from './BrazilCupBadge';
 
 interface EventHeaderProps {
   title: string;
   creator: string;
   venue?: string | null;
   priceCents?: number | null;
+  broadcastsBrazilGame?: boolean;
 }
 
-export const EventHeader: React.FC<EventHeaderProps> = ({ title, creator, venue, priceCents }) => {
+export const EventHeader: React.FC<EventHeaderProps> = ({ title, creator, venue, priceCents, broadcastsBrazilGame }) => {
   const priceLabel = formatPriceBRL(priceCents);
   const isFree = priceCents == null || priceCents === 0;
   return (
@@ -21,13 +23,16 @@ export const EventHeader: React.FC<EventHeaderProps> = ({ title, creator, venue,
       <div className="self-stretch text-[#1A1A1A] text-[11px] font-normal uppercase relative">
         {venue ? <>POR {venue}</> : <>BY {creator}</>}
       </div>
-      <div
-        className={
-          'inline-flex items-center px-2 h-[24px] border border-solid border-[#1A1A1A] ' +
-          (isFree ? 'bg-[#1A1A1A] text-white' : 'bg-white text-[#1A1A1A]')
-        }
-      >
-        <span className="text-[11px] font-normal uppercase">{priceLabel}</span>
+      <div className="flex items-center gap-2 flex-wrap">
+        <div
+          className={
+            'inline-flex items-center px-2 h-[24px] border border-solid border-[#1A1A1A] ' +
+            (isFree ? 'bg-[#1A1A1A] text-white' : 'bg-white text-[#1A1A1A]')
+          }
+        >
+          <span className="text-[11px] font-normal uppercase">{priceLabel}</span>
+        </div>
+        {broadcastsBrazilGame && <BrazilCupBadge size="sm" />}
       </div>
     </div>
   );
