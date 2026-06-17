@@ -76,6 +76,7 @@ const Discover = () => {
   const [loading, setLoading] = useState(true);
   const [userCountry, setUserCountry] = useState<string>('o mundo');
   const [initialDateSet, setInitialDateSet] = useState(false);
+  const [onlyBrazilCup, setOnlyBrazilCup] = useState(false);
   useEffect(() => {
     fetchEvents();
     detectUserCountry();
