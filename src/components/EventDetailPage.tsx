@@ -23,6 +23,7 @@ interface Event {
   target_date: string;
   venue: string | null;
   price_cents: number | null;
+  broadcasts_brazil_game: boolean;
 }
 export const EventDetailPage: React.FC = () => {
   const { id, slug } = useParams();
