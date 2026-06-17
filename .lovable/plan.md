@@ -1,60 +1,39 @@
-# Tag "Brasil na Copa" para eventos
+## Diagnóstico
 
-Feature temporária e simples: criadores marcam o evento como "transmite jogo do Brasil na Copa", ganhando destaque visual no app e um filtro dedicado no Discover.
+O usuário está autenticado e o evento pertence ao mesmo `user_id` (`273fbe37-9404-4a7f-8686-e5de0d04c586`), então o erro não é falta de login nem evento de outro criador.
 
-## 1. Banco de dados (migration)
+As permissões técnicas (`GRANT`) já estão presentes. O ponto mais provável é a política de atualização de `events`, que hoje está definida para `roles: {public}` e sem `WITH CHECK`. Vou substituir por uma política explícita para `authenticated`, com validação do dono também no resultado da atualização.
 
-Adicionar coluna na tabela `events`:
+## Plano
 
-- `broadcasts_brazil_game BOOLEAN NOT NULL DEFAULT false`
+1. Atualizar a RLS de `events`
+   - Remover a política antiga `Users can update their own events`.
+   - Criar uma nova política explícita para usuários logados.
+   - Permitir editar apenas eventos onde `created_by = auth.uid()`.
+   - Garantir que o evento continue pertencendo ao mesmo usuário depois do update com `WITH CHECK (created_by = auth.uid())`.
 
-Sem mudanças em RLS — segue as policies existentes de `events`.
+2. Proteger o código contra mudança acidental de dono
+   - Revisar o update em `EditEvent.tsx` para garantir que ele não envie `created_by`.
+   - Manter apenas os campos editáveis do formulário, incluindo `broadcasts_brazil_game`.
 
-## 2. Criar/Editar evento
-
-Em `src/pages/CreateEvent.tsx` e `src/pages/EditEvent.tsx`:
-
-- Novo toggle (Switch shadcn) com label **"Transmite jogo do Brasil na Copa"** e um subtítulo curto tipo "Aparece com destaque e filtro especial durante a Copa".
-- Posicionado numa seção própria perto do final do form, antes do botão de salvar.
-- Salva no campo `broadcasts_brazil_game`.
-
-## 3. Destaque visual (badge)
-
-Novo componente `src/components/BrazilCupBadge.tsx`:
-
-- Texto: **"BRASIL AO VIVO"** com emoji 🇧🇷
-- Estilo seguindo o design system do projeto (`rounded-none`, borda preta, uppercase 11px), mas com fundo amarelo Brasil (`#FFDF00`) e texto preto para destacar dos demais badges brancos.
-- Variante pequena para cards e variante destaque para a página do evento.
-
-Onde aparecer:
-
-- **`EventsCarousel.tsx`**: badge no topo, junto com data/hora/preço.
-- **`Discover.tsx`**: badge sobreposto no card do evento.
-- **`Calendar.tsx`**: badge no card do evento.
-- **`MyEvents.tsx`**: badge no card.
-- **`EventDetailPage.tsx`** (`EventHeader`): badge em destaque junto ao título.
-
-## 4. Filtro no Discover
-
-Em `src/pages/Discover.tsx`:
-
-- Novo chip/botão de filtro **"🇧🇷 Brasil na Copa"** na barra de filtros existente, no estilo dos outros filtros do Discover.
-- Quando ativo, mostra apenas eventos com `broadcasts_brazil_game = true`.
-- Toggle on/off (clicar de novo desativa).
-
-## 5. Queries
-
-Adicionar `broadcasts_brazil_game` no `.select()` de todos os componentes que listam eventos e nas interfaces `Event`:
-
-- `EventsCarousel.tsx`
-- `Discover.tsx`
-- `Calendar.tsx`
-- `MyEvents.tsx`
-- `EventDetailPage.tsx`
+3. Validar
+   - Confirmar no banco que a nova policy está ativa.
+   - Confirmar que o evento problemático pertence ao usuário logado.
+   - Se necessário, orientar um refresh/login novo para o navegador usar a sessão atualizada.
 
 ## Detalhes técnicos
 
-- Migration única adicionando a coluna com default `false` (não quebra eventos existentes).
-- Tipos do Supabase serão regenerados automaticamente após a migration.
-- Sem mudanças em RLS, auth ou edge functions.
-- Por ser feature temporária: a coluna fica no schema mesmo depois da Copa; basta os criadores não marcarem mais. Se quiser remover depois, é só dropar a coluna e o componente do badge.
+Migration proposta:
+
+```sql
+DROP POLICY IF EXISTS "Users can update their own events" ON public.events;
+
+CREATE POLICY "Authenticated users can update their own events"
+ON public.events
+FOR UPDATE
+TO authenticated
+USING (auth.uid() = created_by)
+WITH CHECK (auth.uid() = created_by);
+```
+
+Isso não libera edição de eventos de terceiros e não torna dados privados públicos.
