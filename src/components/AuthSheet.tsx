@@ -22,7 +22,19 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      if (isSignUp) {
+      if (isForgot) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: 'E-mail enviado',
+          description: 'Verifique sua caixa de entrada para redefinir sua senha.',
+        });
+        setIsForgot(false);
+      } else if (isSignUp) {
         if (!name.trim()) {
           toast({
             title: 'Erro',
@@ -99,16 +111,18 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
         {/* Content */}
         <div className="flex flex-col h-full px-10 pt-24 pb-10">
           <h2 className="text-white text-4xl font-medium mb-2 font-display">
-            {isSignUp ? 'Criar Conta' : 'Entrar'}
+            {isForgot ? 'Recuperar Senha' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </h2>
           <p className="text-gray-400 text-sm mb-8">
-            {isSignUp 
-              ? 'Junte-se a nós para criar e gerenciar seus eventos' 
-              : 'Bem-vindo de volta! Por favor, entre para continuar'}
+            {isForgot
+              ? 'Informe seu e-mail para receber o link de redefinição'
+              : isSignUp 
+                ? 'Junte-se a nós para criar e gerenciar seus eventos' 
+                : 'Bem-vindo de volta! Por favor, entre para continuar'}
           </p>
 
           <form onSubmit={handleAuth} className="flex flex-col gap-6">
-            {isSignUp && (
+            {isSignUp && !isForgot && (
               <div>
                 <label htmlFor="name" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
                   Nome
@@ -140,40 +154,60 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
-                Senha
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full bg-white/10 border border-white/20 text-white px-4 py-3 focus:outline-none focus:border-brand transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
+            {!isForgot && (
+              <div>
+                <label htmlFor="password" className="block text-white text-sm font-medium mb-2 uppercase tracking-wide">
+                  Senha
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="w-full bg-white/10 border border-white/20 text-white px-4 py-3 focus:outline-none focus:border-brand transition-colors"
+                  placeholder="••••••••"
+                />
+              </div>
+            )}
 
             <button
               type="submit"
               disabled={loading}
               className="w-full bg-brand text-white font-medium py-3 px-6 uppercase text-sm border border-black hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Aguarde...' : isSignUp ? 'Criar Conta' : 'Entrar'}
+              {loading ? 'Aguarde...' : isForgot ? 'Enviar Link' : isSignUp ? 'Criar Conta' : 'Entrar'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-gray-400 hover:text-white transition-colors text-sm"
-            >
-              {isSignUp 
-                ? 'Já tem uma conta? Entre' 
-                : 'Não tem uma conta? Crie uma'}
-            </button>
+          <div className="mt-6 text-center space-y-2">
+            {!isForgot && (
+              <button
+                onClick={() => setIsForgot(true)}
+                className="block w-full text-gray-400 hover:text-white transition-colors text-sm"
+              >
+                Esqueceu sua senha?
+              </button>
+            )}
+            {isForgot && (
+              <button
+                onClick={() => setIsForgot(false)}
+                className="block w-full text-gray-400 hover:text-white transition-colors text-sm"
+              >
+                Voltar para entrar
+              </button>
+            )}
+            {!isForgot && (
+              <button
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="block w-full text-gray-400 hover:text-white transition-colors text-sm"
+              >
+                {isSignUp 
+                  ? 'Já tem uma conta? Entre' 
+                  : 'Não tem uma conta? Crie uma'}
+              </button>
+            )}
           </div>
         </div>
       </div>
