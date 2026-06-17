@@ -16,6 +16,7 @@ interface Event {
   background_image_url: string;
   target_date: string;
   address: string;
+  broadcasts_brazil_game: boolean;
 }
 
 type ViewMode = 'month' | 'week';
