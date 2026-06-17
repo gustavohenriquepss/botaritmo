@@ -46,6 +46,9 @@ const EditEvent = () => {
   const [description, setDescription] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [venue, setVenue] = useState('');
+  const [isFree, setIsFree] = useState(true);
+  const [priceInput, setPriceInput] = useState('');
   const [user, setUser] = useState<User | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -128,6 +131,14 @@ const EditEvent = () => {
       setDescription(data.description);
       setLocation(data.address);
       setImagePreview(data.background_image_url);
+      setVenue(data.venue || '');
+      if (data.price_cents != null && data.price_cents > 0) {
+        setIsFree(false);
+        setPriceInput((data.price_cents / 100).toFixed(2).replace('.', ','));
+      } else {
+        setIsFree(true);
+        setPriceInput('');
+      }
 
       // Parse date and time
       const targetDate = new Date(data.target_date);
