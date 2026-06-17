@@ -212,6 +212,7 @@ const CreateEvent = () => {
           creator: creatorName,
           venue: venue.trim() || null,
           price_cents: priceCents,
+          broadcasts_brazil_game: broadcastsBrazilGame,
         });
 
       if (insertError) throw insertError;
