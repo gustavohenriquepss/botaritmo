@@ -63,7 +63,7 @@ const EventCard = ({
         </div>
       </div>
       {event.broadcasts_brazil_game && (
-        <div className="absolute top-4 right-4">
+        <div className="absolute left-4" style={{ top: 'calc(100% - 3rem)' }}>
           <BrazilCupBadge />
         </div>
       )}
