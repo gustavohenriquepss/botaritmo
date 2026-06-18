@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { formatPriceBRL } from '@/lib/price';
 import { BrazilCupBadge } from '@/components/BrazilCupBadge';
-import { Share2 } from 'lucide-react';
+import { Share2, Pencil } from 'lucide-react';
 import { ptBR } from 'date-fns/locale';
 
 interface Profile {
@@ -79,6 +79,13 @@ const PublicProfile = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState<Date>(new Date());
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setCurrentUserId(session?.user?.id ?? null);
+    });
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -203,16 +210,30 @@ const PublicProfile = () => {
                 ))}
               </div>
             )}
-            <button
-              onClick={handleShare}
-              className="mt-4 relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center gap-2 text-[11px] font-medium uppercase border border-black group"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                <Share2 className="w-3 h-3" />
-                COMPARTILHAR
-              </span>
-              <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-            </button>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {currentUserId === profile.user_id && (
+                <Link
+                  to="/perfil/editar"
+                  className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center gap-2 text-[11px] font-medium uppercase border border-black group"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Pencil className="w-3 h-3" />
+                    EDITAR PERFIL
+                  </span>
+                  <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                </Link>
+              )}
+              <button
+                onClick={handleShare}
+                className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center gap-2 text-[11px] font-medium uppercase border border-black group"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <Share2 className="w-3 h-3" />
+                  COMPARTILHAR
+                </span>
+                <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+              </button>
+            </div>
           </div>
         </section>
 

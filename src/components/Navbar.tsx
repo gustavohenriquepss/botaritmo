@@ -5,6 +5,8 @@ import { Menu, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
 import { AuthSheet } from './AuthSheet';
+import { ensureProfileUsername } from '@/lib/profile';
+import { toast } from 'sonner';
 import logo from '@/assets/logo-br.png';
 export const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -36,6 +38,17 @@ export const Navbar: React.FC = () => {
       setIsAuthOpen(false);
     }
   }, [user, pendingRoute, navigate]);
+
+  const goToMyProfile = async (closeMenu?: () => void) => {
+    const username = await ensureProfileUsername();
+    if (!username) {
+      toast.error('Não foi possível abrir seu perfil');
+      return;
+    }
+    closeMenu?.();
+    navigate(`/${username}`);
+  };
+
   return createPortal(<>
       <nav className="fixed top-8 left-4 md:left-8 z-[2000] flex items-center justify-start mx-0 gap-2">
       {/* Logo */}
@@ -71,10 +84,10 @@ export const Navbar: React.FC = () => {
               <span className="relative z-10">MEUS EVENTOS</span>
               <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
             </Link>
-            <Link to="/perfil" className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border-l-0 border border-black leading-none group">
+            <button onClick={() => goToMyProfile()} className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border-l-0 border border-black leading-none group">
               <span className="relative z-10">MEU PERFIL</span>
               <span className="absolute inset-0 bg-brand translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-            </Link>
+            </button>
             <button onClick={async () => {
             await supabase.auth.signOut();
           }} className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border-l-0 border border-black leading-none group">
@@ -133,12 +146,12 @@ export const Navbar: React.FC = () => {
             }}>
                   MEUS EVENTOS
                 </Link>
-                <Link to="/perfil" onClick={() => setIsMobileMenuOpen(false)} className="flex-1 flex items-center justify-center text-[#1A1A1A] text-[17px] font-medium uppercase border-b border-black tracking-[-0.34px] animate-fade-in" style={{
+                <button onClick={() => goToMyProfile(() => setIsMobileMenuOpen(false))} className="flex-1 flex items-center justify-center text-[#1A1A1A] text-[17px] font-medium uppercase border-b border-black tracking-[-0.34px] animate-fade-in" style={{
               animationDelay: '0.35s',
               animationFillMode: 'both'
             }}>
                   MEU PERFIL
-                </Link>
+                </button>
                 <button onClick={async () => {
               await supabase.auth.signOut();
               setIsMobileMenuOpen(false);
