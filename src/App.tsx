@@ -12,6 +12,8 @@ import CreateEvent from "./pages/CreateEvent";
 import EditEvent from "./pages/EditEvent";
 import ResetPassword from "./pages/ResetPassword";
 import EventRedirect from "./pages/EventRedirect";
+import EditProfile from "./pages/EditProfile";
+import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -29,6 +31,8 @@ const App = () => (
       <Route path="/auth" element={<Auth />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/perfil" element={<EditProfile />} />
+      <Route path="/@:username" element={<PublicProfile />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
