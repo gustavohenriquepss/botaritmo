@@ -72,11 +72,11 @@ const EditProfile = () => {
     const ext = file.name.split('.').pop();
     const path = `avatars/${userId}/${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from('event-images').upload(path, file, {
-      upsert: true,
+      upsert: false,
       contentType: file.type,
     });
     if (error) {
-      toast.error('Erro ao enviar imagem');
+      toast.error(error.message || 'Erro ao enviar imagem');
       setUploading(false);
       return;
     }
