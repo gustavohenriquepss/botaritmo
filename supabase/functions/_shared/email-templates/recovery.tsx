@@ -51,7 +51,7 @@ const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#! '#1A1A1A',
+  color: '#1A1A1A',
   margin: '0 0 20px',
 }
 const text = {
