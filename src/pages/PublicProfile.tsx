@@ -10,6 +10,7 @@ import { formatPriceBRL } from '@/lib/price';
 import { BrazilCupBadge } from '@/components/BrazilCupBadge';
 import { Share2, Pencil } from 'lucide-react';
 import { ptBR } from 'date-fns/locale';
+import { MobileDatePicker } from '@/components/MobileDatePicker';
 
 interface Profile {
   user_id: string;
