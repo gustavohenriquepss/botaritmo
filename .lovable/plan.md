@@ -1,39 +1,68 @@
-## Diagnóstico
+# Perfil público de criadores
 
-O usuário está autenticado e o evento pertence ao mesmo `user_id` (`273fbe37-9404-4a7f-8686-e5de0d04c586`), então o erro não é falta de login nem evento de outro criador.
+Página pública compartilhável onde cada criador/curador/produtor mostra seus eventos para seguidores.
 
-As permissões técnicas (`GRANT`) já estão presentes. O ponto mais provável é a política de atualização de `events`, que hoje está definida para `roles: {public}` e sem `WITH CHECK`. Vou substituir por uma política explícita para `authenticated`, com validação do dono também no resultado da atualização.
+## URL
+`/@:username` (ex: `botaritmo.com/@yeon`)
 
-## Plano
+## Banco de dados (migration)
+Adicionar à tabela `profiles`:
+- `username` (text, unique, lowercase, regex `^[a-z0-9_]{3,30}$`)
+- `avatar_url` (text)
+- `bio` (text, máx 280 chars)
+- `tags` (text[]) — tags livres tipo "techno", "house", "curadoria"
 
-1. Atualizar a RLS de `events`
-   - Remover a política antiga `Users can update their own events`.
-   - Criar uma nova política explícita para usuários logados.
-   - Permitir editar apenas eventos onde `created_by = auth.uid()`.
-   - Garantir que o evento continue pertencendo ao mesmo usuário depois do update com `WITH CHECK (created_by = auth.uid())`.
+RLS:
+- `SELECT` público em `profiles` (anon + authenticated) para permitir página pública
+- `UPDATE` continua restrito ao dono (`auth.uid() = user_id`)
 
-2. Proteger o código contra mudança acidental de dono
-   - Revisar o update em `EditEvent.tsx` para garantir que ele não envie `created_by`.
-   - Manter apenas os campos editáveis do formulário, incluindo `broadcasts_brazil_game`.
+Storage:
+- Reutilizar bucket `event-images` (já público) com pasta `avatars/{user_id}/...` — evita criar bucket novo
 
-3. Validar
-   - Confirmar no banco que a nova policy está ativa.
-   - Confirmar que o evento problemático pertence ao usuário logado.
-   - Se necessário, orientar um refresh/login novo para o navegador usar a sessão atualizada.
+## Páginas / Componentes
 
-## Detalhes técnicos
+**1. `/perfil` (edição — autenticado)**
+Formulário para editar avatar, nome, username, bio, tags. Validação de username único.
+- Upload de avatar via input file → storage
+- Tags via input com chips (separadas por enter/vírgula)
 
-Migration proposta:
-
-```sql
-DROP POLICY IF EXISTS "Users can update their own events" ON public.events;
-
-CREATE POLICY "Authenticated users can update their own events"
-ON public.events
-FOR UPDATE
-TO authenticated
-USING (auth.uid() = created_by)
-WITH CHECK (auth.uid() = created_by);
+**2. `/@:username` (público)**
+Layout:
+```text
+┌─────────────────────────────────┐
+│  [Avatar]  Nome                 │
+│            @username            │
+│            Bio                  │
+│            [tag] [tag] [tag]    │
+│            [Compartilhar]       │
+├─────────────────────────────────┤
+│  CALENDÁRIO (mês atual,         │
+│  marcando dias com eventos)     │
+├─────────────────────────────────┤
+│  PRÓXIMOS EVENTOS               │
+│  [card] [card] [card]           │
+├─────────────────────────────────┤
+│  EVENTOS PASSADOS               │
+│  [card] [card]                  │
+└─────────────────────────────────┘
 ```
+- Reutiliza os mesmos cards de evento usados em Discover
+- Calendário no estilo da home (componente `Calendar` shadcn já em uso)
+- Divisão entre próximos/passados baseada em `target_date` vs `now()`
+- Botão "Compartilhar" copia o link `/@username`
 
-Isso não libera edição de eventos de terceiros e não torna dados privados públicos.
+**3. Navegação**
+- No header (quando logado): link "Meu Perfil" → `/perfil`
+- Em cada card/página de evento: nome do criador vira link clicável → `/@username` do dono (`events.created_by` → `profiles`)
+
+## Estilo
+Segue identidade Bota Ritmo: cantos retos (`rounded-none`), bordas pretas, fundo branco, botões uppercase 11px. Avatar quadrado (sem `rounded-full`) para manter a linguagem visual.
+
+## Fora de escopo (intencionalmente)
+- Sistema de "seguir" (compartilhamento é via link)
+- Mensagens, comentários
+- Estatísticas/analytics no perfil
+
+## Pontos a confirmar
+1. URL no formato `/@username` está OK, ou prefere `/perfil/:username`?
+2. Avatar quadrado (alinhado à identidade) ou redondo?
