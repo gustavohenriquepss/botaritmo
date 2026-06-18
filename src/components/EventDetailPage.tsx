@@ -15,6 +15,7 @@ interface Event {
   id: string;
   title: string;
   creator: string;
+  created_by: string;
   description: string;
   date: string;
   time: string;
@@ -25,11 +26,18 @@ interface Event {
   price_cents: number | null;
   broadcasts_brazil_game: boolean;
 }
+
+interface CreatorProfile {
+  display_name: string | null;
+  username: string | null;
+  avatar_url: string | null;
+}
 export const EventDetailPage: React.FC = () => {
   const { id, slug } = useParams();
   const navigate = useNavigate();
   const [isRegistered, setIsRegistered] = useState(false);
   const [event, setEvent] = useState<Event | null>(null);
+  const [creatorProfile, setCreatorProfile] = useState<CreatorProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [notFound, setNotFound] = useState(false);
@@ -41,6 +49,10 @@ export const EventDetailPage: React.FC = () => {
   useEffect(() => {
     if (event?.id) checkRegistration();
   }, [event?.id]);
+
+  useEffect(() => {
+    if (event?.created_by) fetchCreatorProfile();
+  }, [event?.created_by]);
   
   const fetchEvent = async () => {
     let query = supabase.from('events').select('*');
@@ -58,6 +70,16 @@ export const EventDetailPage: React.FC = () => {
       setEvent(data);
     }
     setLoading(false);
+  };
+
+  const fetchCreatorProfile = async () => {
+    if (!event?.created_by) return;
+    const { data } = await supabase
+      .from('profiles')
+      .select('display_name, username, avatar_url')
+      .eq('user_id', event.created_by)
+      .maybeSingle();
+    if (data) setCreatorProfile(data);
   };
 
   const checkRegistration = async () => {
@@ -172,7 +194,7 @@ export const EventDetailPage: React.FC = () => {
           <div className="flex w-full flex-col items-start gap-10 relative p-10 pb-24 max-lg:w-full max-lg:px-4 max-lg:py-6 max-lg:pb-6 max-lg:gap-8 opacity-0 animate-fade-in [animation-delay:200ms]">
             <div className="flex flex-col items-start gap-4 self-stretch relative">
               <EventMeta date={event.date} time={event.time} targetDate={event.target_date} />
-              <EventHeader title={event.title} creator={event.creator} venue={event.venue} priceCents={event.price_cents} broadcastsBrazilGame={event.broadcasts_brazil_game} />
+              <EventHeader title={event.title} creator={event.creator} venue={event.venue} priceCents={event.price_cents} broadcastsBrazilGame={event.broadcasts_brazil_game} creatorProfile={creatorProfile} />
             </div>
             
             <EventDescription description={event.description} />
