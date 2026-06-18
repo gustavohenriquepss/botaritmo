@@ -119,7 +119,7 @@ const EditProfile = () => {
       return;
     }
     toast.success('Perfil atualizado');
-    if (username) navigate(`/@${username}`);
+    if (username) navigate(`/${username}`);
   };
 
   if (loading) {
@@ -249,7 +249,7 @@ const EditProfile = () => {
           </button>
           {username && (
             <button
-              onClick={() => navigate(`/@${username}`)}
+              onClick={() => navigate(`/${username}`)}
               className="relative overflow-hidden bg-white text-black h-[44px] px-6 flex items-center text-[11px] font-medium uppercase border border-black group"
             >
               <span className="relative z-10">VER MEU PERFIL</span>
