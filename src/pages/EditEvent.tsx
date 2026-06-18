@@ -35,6 +35,11 @@ const eventSchema = z.object({
   description: z.string().trim().min(1, 'Descrição é obrigatória').max(2000, 'Descrição deve ter menos de 2000 caracteres'),
 });
 
+type RegistrationWithProfile = {
+  registered_at: string;
+  profiles: { display_name: string | null } | null;
+};
+
 const EditEvent = () => {
   const { id } = useParams();
   const [eventName, setEventName] = useState('');
@@ -179,7 +184,7 @@ const EditEvent = () => {
       if (error) throw error;
 
       if (data) {
-        const formattedRegistrants = data.map((reg: any) => ({
+        const formattedRegistrants = (data as RegistrationWithProfile[]).map((reg) => ({
           display_name: reg.profiles?.display_name || 'Anônimo',
           registered_at: reg.registered_at
         }));
