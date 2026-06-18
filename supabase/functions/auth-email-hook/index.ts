@@ -17,12 +17,12 @@ const corsHeaders = {
 }
 
 const EMAIL_SUBJECTS: Record<string, string> = {
-  signup: 'Confirm your email',
-  invite: "You've been invited",
-  magiclink: 'Your login link',
-  recovery: 'Reset your password',
-  email_change: 'Confirm your new email',
-  reauthentication: 'Your verification code',
+  signup: 'Confirme seu e-mail',
+  invite: 'Você foi convidado',
+  magiclink: 'Seu link de acesso',
+  recovery: 'Redefinição de senha',
+  email_change: 'Confirme seu novo e-mail',
+  reauthentication: 'Seu código de verificação',
 }
 
 // Template mapping
@@ -36,7 +36,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "botaritmo"
+const SITE_NAME = "Bota Ritmo"
 const SENDER_DOMAIN = "notify.botaritmo.com"
 const ROOT_DOMAIN = "botaritmo.com"
 const FROM_DOMAIN = "botaritmo.com" // Domain shown in From address (may be root or sender subdomain)
