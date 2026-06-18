@@ -31,7 +31,7 @@ const App = () => (
       <Route path="/auth" element={<Auth />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/admin" element={<Admin />} />
-      <Route path="/perfil" element={<EditProfile />} />
+      <Route path="/perfil/editar" element={<EditProfile />} />
       <Route path="/:handle" element={<PublicProfile />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />

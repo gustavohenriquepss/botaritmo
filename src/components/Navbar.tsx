@@ -5,6 +5,8 @@ import { Menu, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
 import { AuthSheet } from './AuthSheet';
+import { ensureProfileUsername } from '@/lib/profile';
+import { toast } from 'sonner';
 import logo from '@/assets/logo-br.png';
 export const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
