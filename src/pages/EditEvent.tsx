@@ -184,7 +184,7 @@ const EditEvent = () => {
       if (error) throw error;
 
       if (data) {
-        const formattedRegistrants = (data as RegistrationWithProfile[]).map((reg) => ({
+        const formattedRegistrants = (data as unknown as RegistrationWithProfile[]).map((reg) => ({
           display_name: reg.profiles?.display_name || 'Anônimo',
           registered_at: reg.registered_at
         }));
