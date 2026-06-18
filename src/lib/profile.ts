@@ -31,7 +31,7 @@ export async function ensureProfileUsername(): Promise<string | null> {
 
   // Find unique candidate
   const { data: taken } = await supabase
-    .from('profiles')
+    .from('profiles_public')
     .select('username')
     .like('username', `${base}%`);
 

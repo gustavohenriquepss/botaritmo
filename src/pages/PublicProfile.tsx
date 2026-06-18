@@ -94,7 +94,7 @@ const PublicProfile = () => {
       setLoading(true);
       const cleanUsername = (username ?? '').toLowerCase();
       const { data: profileData } = await supabase
-        .from('profiles')
+        .from('profiles_public')
         .select('user_id, display_name, username, bio, avatar_url, tags')
         .eq('username', cleanUsername)
         .maybeSingle();
