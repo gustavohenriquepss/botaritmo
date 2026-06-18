@@ -315,23 +315,21 @@ const EditEvent = () => {
 
       const creatorName = user.email?.split('@')[0] || 'Anônimo';
 
-      // Update event in database
-      const { error: updateError } = await supabase
-        .from('events')
-        .update({
-          title: eventName,
-          description: description,
-          date: dateStr,
-          time: timeStr,
-          address: location,
-          background_image_url: imageUrl,
-          target_date: targetDate.toISOString(),
-          creator: creatorName,
-          venue: venue.trim() || null,
-          price_cents: priceCents,
-          broadcasts_brazil_game: broadcastsBrazilGame,
-        })
-        .eq('id', id);
+      // Update through a backend function so the owner check happens server-side.
+      const { error: updateError } = await supabase.rpc('update_own_event', {
+        _event_id: id!,
+        _title: eventName,
+        _description: description,
+        _date: dateStr,
+        _time: timeStr,
+        _address: location,
+        _background_image_url: imageUrl || '',
+        _target_date: targetDate.toISOString(),
+        _creator: creatorName,
+        _venue: venue.trim() || null,
+        _price_cents: priceCents as number,
+        _broadcasts_brazil_game: broadcastsBrazilGame,
+      });
 
       if (updateError) throw updateError;
 
