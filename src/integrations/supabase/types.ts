@@ -271,6 +271,7 @@ export type Database = {
           display_name: string | null
           id: string | null
           tags: string[] | null
+          user_id: string | null
           username: string | null
         }
         Insert: {
@@ -279,6 +280,7 @@ export type Database = {
           display_name?: string | null
           id?: string | null
           tags?: string[] | null
+          user_id?: string | null
           username?: string | null
         }
         Update: {
@@ -287,6 +289,7 @@ export type Database = {
           display_name?: string | null
           id?: string | null
           tags?: string[] | null
+          user_id?: string | null
           username?: string | null
         }
         Relationships: []
