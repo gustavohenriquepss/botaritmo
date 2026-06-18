@@ -72,7 +72,8 @@ const EventCard = ({ event }: { event: Event }) => {
 };
 
 const PublicProfile = () => {
-  const { username } = useParams<{ username: string }>();
+  const { handle } = useParams<{ handle: string }>();
+  const username = handle?.startsWith('@') ? handle.slice(1) : undefined;
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
