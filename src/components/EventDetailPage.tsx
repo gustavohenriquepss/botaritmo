@@ -15,6 +15,7 @@ interface Event {
   id: string;
   title: string;
   creator: string;
+  created_by: string;
   description: string;
   date: string;
   time: string;
@@ -24,6 +25,12 @@ interface Event {
   venue: string | null;
   price_cents: number | null;
   broadcasts_brazil_game: boolean;
+}
+
+interface CreatorProfile {
+  display_name: string | null;
+  username: string | null;
+  avatar_url: string | null;
 }
 export const EventDetailPage: React.FC = () => {
   const { id, slug } = useParams();
