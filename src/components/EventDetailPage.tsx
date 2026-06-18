@@ -49,6 +49,10 @@ export const EventDetailPage: React.FC = () => {
   useEffect(() => {
     if (event?.id) checkRegistration();
   }, [event?.id]);
+
+  useEffect(() => {
+    if (event?.created_by) fetchCreatorProfile();
+  }, [event?.created_by]);
   
   const fetchEvent = async () => {
     let query = supabase.from('events').select('*');
@@ -66,6 +70,16 @@ export const EventDetailPage: React.FC = () => {
       setEvent(data);
     }
     setLoading(false);
+  };
+
+  const fetchCreatorProfile = async () => {
+    if (!event?.created_by) return;
+    const { data } = await supabase
+      .from('profiles')
+      .select('display_name, username, avatar_url')
+      .eq('user_id', event.created_by)
+      .maybeSingle();
+    if (data) setCreatorProfile(data);
   };
 
   const checkRegistration = async () => {
