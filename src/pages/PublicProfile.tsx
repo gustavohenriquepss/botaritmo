@@ -287,9 +287,9 @@ const PublicProfile = () => {
 
         {/* Past */}
         {past.length > 0 && (
-          <section>
+          <section className="max-w-7xl mx-auto">
             <h2 className="text-[11px] uppercase font-medium mb-4">EVENTOS PASSADOS</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 opacity-70">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 opacity-70">
               {past.map((e) => (
                 <EventCard key={e.id} event={e} />
               ))}
