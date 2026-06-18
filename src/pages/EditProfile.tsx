@@ -96,16 +96,19 @@ const EditProfile = () => {
       return;
     }
     setSaving(true);
+    const profilePayload = {
+      user_id: userId,
+      display_name: displayName.trim() || null,
+      username: username.trim() || null,
+      bio: bio.trim() || null,
+      tags,
+      avatar_url: avatarUrl,
+    };
     const { error } = await supabase
       .from('profiles')
-      .update({
-        display_name: displayName.trim() || null,
-        username: username.trim() || null,
-        bio: bio.trim() || null,
-        tags,
-        avatar_url: avatarUrl,
-      })
-      .eq('user_id', userId);
+      .upsert(profilePayload, { onConflict: 'user_id' })
+      .select('user_id')
+      .single();
     setSaving(false);
     if (error) {
       if (error.code === '23505') {
