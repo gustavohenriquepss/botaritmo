@@ -80,6 +80,7 @@ const PublicProfile = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
