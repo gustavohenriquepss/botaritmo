@@ -156,6 +156,44 @@ export type Database = {
         }
         Returns: boolean
       }
+      update_own_event: {
+        Args: {
+          _address: string
+          _background_image_url: string
+          _broadcasts_brazil_game: boolean
+          _creator: string
+          _date: string
+          _description: string
+          _event_id: string
+          _price_cents: number
+          _target_date: string
+          _time: string
+          _title: string
+          _venue: string
+        }
+        Returns: {
+          address: string
+          background_image_url: string
+          broadcasts_brazil_game: boolean
+          created_by: string
+          creator: string
+          date: string
+          description: string
+          id: string
+          price_cents: number | null
+          slug: string
+          target_date: string
+          time: string
+          title: string
+          venue: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "events"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       app_role: "admin" | "user"

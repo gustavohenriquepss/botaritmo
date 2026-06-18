@@ -35,6 +35,11 @@ const eventSchema = z.object({
   description: z.string().trim().min(1, 'Descrição é obrigatória').max(2000, 'Descrição deve ter menos de 2000 caracteres'),
 });
 
+type RegistrationWithProfile = {
+  registered_at: string;
+  profiles: { display_name: string | null } | null;
+};
+
 const EditEvent = () => {
   const { id } = useParams();
   const [eventName, setEventName] = useState('');
@@ -179,7 +184,7 @@ const EditEvent = () => {
       if (error) throw error;
 
       if (data) {
-        const formattedRegistrants = data.map((reg: any) => ({
+        const formattedRegistrants = (data as unknown as RegistrationWithProfile[]).map((reg) => ({
           display_name: reg.profiles?.display_name || 'Anônimo',
           registered_at: reg.registered_at
         }));
@@ -315,23 +320,21 @@ const EditEvent = () => {
 
       const creatorName = user.email?.split('@')[0] || 'Anônimo';
 
-      // Update event in database
-      const { error: updateError } = await supabase
-        .from('events')
-        .update({
-          title: eventName,
-          description: description,
-          date: dateStr,
-          time: timeStr,
-          address: location,
-          background_image_url: imageUrl,
-          target_date: targetDate.toISOString(),
-          creator: creatorName,
-          venue: venue.trim() || null,
-          price_cents: priceCents,
-          broadcasts_brazil_game: broadcastsBrazilGame,
-        })
-        .eq('id', id);
+      // Update through a backend function so the owner check happens server-side.
+      const { error: updateError } = await supabase.rpc('update_own_event', {
+        _event_id: id!,
+        _title: eventName,
+        _description: description,
+        _date: dateStr,
+        _time: timeStr,
+        _address: location,
+        _background_image_url: imageUrl || '',
+        _target_date: targetDate.toISOString(),
+        _creator: creatorName,
+        _venue: venue.trim() || null,
+        _price_cents: priceCents as number,
+        _broadcasts_brazil_game: broadcastsBrazilGame,
+      });
 
       if (updateError) throw updateError;
 
