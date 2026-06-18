@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public can view event images" ON storage.objects;

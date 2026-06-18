@@ -72,11 +72,11 @@ const EditProfile = () => {
     const ext = file.name.split('.').pop();
     const path = `avatars/${userId}/${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from('event-images').upload(path, file, {
-      upsert: true,
+      upsert: false,
       contentType: file.type,
     });
     if (error) {
-      toast.error('Erro ao enviar imagem');
+      toast.error(error.message || 'Erro ao enviar imagem');
       setUploading(false);
       return;
     }
@@ -96,16 +96,19 @@ const EditProfile = () => {
       return;
     }
     setSaving(true);
+    const profilePayload = {
+      user_id: userId,
+      display_name: displayName.trim() || null,
+      username: username.trim() || null,
+      bio: bio.trim() || null,
+      tags,
+      avatar_url: avatarUrl,
+    };
     const { error } = await supabase
       .from('profiles')
-      .update({
-        display_name: displayName.trim() || null,
-        username: username.trim() || null,
-        bio: bio.trim() || null,
-        tags,
-        avatar_url: avatarUrl,
-      })
-      .eq('user_id', userId);
+      .upsert(profilePayload, { onConflict: 'user_id' })
+      .select('user_id')
+      .single();
     setSaving(false);
     if (error) {
       if (error.code === '23505') {
