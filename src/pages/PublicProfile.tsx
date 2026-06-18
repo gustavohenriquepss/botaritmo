@@ -187,9 +187,9 @@ const PublicProfile = () => {
       />
       <Navbar />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 pt-32 pb-16">
+      <main className="flex-1 w-full px-4 md:px-8 pt-32 pb-16">
         {/* Header */}
-        <section className="flex flex-col md:flex-row gap-6 md:gap-8 border-b border-black pb-8 mb-12">
+        <section className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-8 border-b border-black pb-8 mb-12">
           <div className="w-32 h-32 md:w-40 md:h-40 border border-black bg-gray-100 overflow-hidden flex-shrink-0">
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt={profile.display_name ?? ''} className="w-full h-full object-cover" />
@@ -239,45 +239,51 @@ const PublicProfile = () => {
           </div>
         </section>
 
-        {/* Calendar */}
-        {upcoming.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-[11px] uppercase font-medium mb-4">CALENDÁRIO</h2>
-            <div className="border border-black inline-block">
+        {/* Upcoming with calendar */}
+        <section className="mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-12">
+            {/* Calendar - desktop */}
+            <div className="hidden lg:block lg:sticky lg:top-24 self-start">
               <Calendar
                 mode="single"
-                month={month}
-                onMonthChange={setMonth}
+                selected={date}
+                onSelect={setDate}
                 locale={ptBR}
                 modifiers={{ hasEvent: eventDates }}
                 modifiersClassNames={{ hasEvent: 'bg-brand text-black font-bold' }}
-                onSelect={(d) => {
-                  if (!d) return;
-                  const ev = upcoming.find(
-                    (e) =>
-                      new Date(e.target_date).toDateString() === d.toDateString()
-                  );
-                  if (ev) navigate(`/evento/${ev.slug}`);
-                }}
-                className="p-3 pointer-events-auto"
+                className="mx-auto pointer-events-auto"
               />
             </div>
-          </section>
-        )}
 
-        {/* Upcoming */}
-        <section className="mb-12">
-          <h2 className="text-[11px] uppercase font-medium mb-4">PRÓXIMOS EVENTOS</h2>
-          {upcoming.length === 0 ? (
-            <p className="text-sm text-gray-500">Nenhum evento futuro.</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcoming.map((e) => (
-                <EventCard key={e.id} event={e} />
-              ))}
+            <MobileDatePicker date={date} onSelect={setDate} onClear={() => setDate(undefined)} />
+
+            <div className="lg:col-start-2">
+              <h2 className="text-[11px] uppercase font-medium mb-4">PRÓXIMOS EVENTOS</h2>
+              {(() => {
+                const list = date
+                  ? upcoming.filter(
+                      (e) => new Date(e.target_date).toDateString() === date.toDateString()
+                    )
+                  : upcoming;
+                if (list.length === 0) {
+                  return (
+                    <p className="text-sm text-gray-500">
+                      {date ? 'Nenhum evento nesta data.' : 'Nenhum evento futuro.'}
+                    </p>
+                  );
+                }
+                return (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                    {list.map((e) => (
+                      <EventCard key={e.id} event={e} />
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
-          )}
+          </div>
         </section>
+
 
         {/* Past */}
         {past.length > 0 && (
