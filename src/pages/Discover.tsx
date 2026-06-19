@@ -204,7 +204,7 @@ const Discover = () => {
       <main>
       {/* Hero Section */}
       <section className="pt-32 md:pt-40 lg:pt-48 pb-6 md:pb-16 lg:pb-24 px-6 md:px-12 lg:px-16">
-        <div className="text-left pl-8 md:pl-12">
+        <div className="text-left pl-8 md:pl-12 max-w-2xl">
           <h1 className="sm:text-3xl md:text-5xl lg:text-7xl font-semibold mb-6 md:mb-10 animate-fade-in text-4xl font-display" style={{
           animationDelay: '0.3s',
           animationFillMode: 'both'
