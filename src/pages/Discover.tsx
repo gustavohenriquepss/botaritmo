@@ -211,7 +211,7 @@ const Discover = () => {
         }}>
             Os eventos mais quentes do Rio em um só lugar
           </h1>
-          <p className="text-sm md:text-base lg:text-[18px] text-black max-w-2xl mx-auto animate-fade-in" style={{
+          <p className="text-sm md:text-base lg:text-[18px] text-black animate-fade-in" style={{
           animationDelay: '0.7s',
           animationFillMode: 'both'
         }}>Feito pra quem quer dar um role sem perder tempo caçando flyer em story ou grupo de WhatsApp. Só clicar e brotar!</p>
